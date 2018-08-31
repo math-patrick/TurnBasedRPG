@@ -7,6 +7,7 @@ package turnbasedrpg;
 
 import javax.swing.*;
 import java.awt.*;
+import turnbasedrpg.moves.pokemon;
 
 /**
  *
@@ -24,14 +25,16 @@ public class Player extends JFrame {
     private JButton b4;
     
     public Player (int width, int height) {
+        pokemon pokemonGetter = new pokemon();
         this.width = width;
         this.height = height;
         contentPane = this.getContentPane();
         message = new JTextArea();
-        b1 = new JButton ("Water gun");
-        b2 = new JButton ("Growl");
-        b3 = new JButton ("Tackle");
-        b4 = new JButton ("Bubbles");
+        pokemon Squirtle = pokemonGetter.getSquirtle();
+        b1 = new JButton (Squirtle.getPokemonMove(0).getName());
+        b2 = new JButton (Squirtle.getPokemonMove(1).getName());
+        b3 = new JButton (Squirtle.getPokemonMove(0).getName());;
+        b4 = new JButton (Squirtle.getPokemonMove(1).getName());
     }
     
     public void setUpGUI() {

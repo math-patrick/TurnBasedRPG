@@ -9,7 +9,7 @@ package turnbasedrpg.moves;
  *
  * @author matheus.oliveira
  */
-public class Moves {
+public final class Moves {
     public String name = "";
     public int power = 10;
     public int accuracy = 100;
@@ -19,15 +19,36 @@ public class Moves {
         
     }
     
-    public void getMoves() {
-        Moves waterGun = new Moves();
-        waterGun.setFgType(2);
-        waterGun.setAccuracy(100);
-        waterGun.setPower(40);
-        waterGun.setName("Water Gun");
+    public Moves (int power, String name, int fgType, int accuracy) {
+        this.setPower(power);
+        this.setName(name);
+        this.setFgType(fgType);
+        this.setAccuracy(accuracy);
     }
     
- 
+    public Moves (int power, String name, int fgType) {
+        this.setPower(power);
+        this.setName(name);
+        this.setFgType(fgType);
+    }
+    
+    public Moves (int power, String name) {
+        this.setPower(power);
+        this.setName(name);
+    }
+    
+    public Moves getWaterMove(int id) {
+        switch (id) {
+            case 1:
+                Moves waterGun = new Moves(40, "Water Gun");
+                return waterGun;
+            case 2:
+                Moves bubble = new Moves(30, "Bubble");
+                return bubble;
+        }
+        return null;
+    }
+    
     public String getName() {
         return name;
     }
