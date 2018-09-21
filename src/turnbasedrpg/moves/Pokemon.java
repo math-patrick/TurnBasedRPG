@@ -4,12 +4,12 @@ package turnbasedrpg.moves;
  *
  * @author matheus.oliveira
  */
-public class pokemon {
+public class Pokemon {
     String name = "";
     int level = 1;
     Moves[] moves;
     
-    public pokemon () {
+    public Pokemon () {
     }
     
     public void createPokemon(String name, Moves[] moves) {
@@ -21,7 +21,7 @@ public class pokemon {
         return this.moves[arrayPosition];
     }
     
-    public pokemon getSquirtle() {
+    public Pokemon getSquirtle() {
         Moves moveGetter = new Moves();
         Moves[] movesArray = new Moves[3];
         movesArray[0] = moveGetter.getWaterMove(2);
