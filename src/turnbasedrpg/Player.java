@@ -33,8 +33,8 @@ public class Player extends JFrame {
         Pokemon Squirtle = pokemonGetter.getSquirtle();
         b1 = new JButton (Squirtle.getPokemonMove(0).getName());
         b2 = new JButton (Squirtle.getPokemonMove(1).getName());
-        b3 = new JButton (Squirtle.getPokemonMove(0).getName());;
-        b4 = new JButton (Squirtle.getPokemonMove(1).getName());
+        b3 = new JButton (Squirtle.getPokemonMove(2).getName());
+        b4 = new JButton (Squirtle.getPokemonMove(3).getName());
     }
     
     public void setUpGUI() {

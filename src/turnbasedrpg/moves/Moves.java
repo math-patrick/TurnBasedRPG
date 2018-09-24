@@ -10,11 +10,20 @@ package turnbasedrpg.moves;
  * @author matheus.oliveira
  */
 public final class Moves {
-    // Name
+
+    /**
+     * Move name
+     */
     public String name = "";
-    // Power
+
+    /**
+     * Move power, defaults 10
+     */
     public int power = 10;
-    // PP (power points)
+
+    /**
+     * Move power points, defaults 20
+     */
     public int pp = 20;
     // Accuracy
     public int accuracy = 100;
@@ -22,8 +31,8 @@ public final class Moves {
     public int fgType = 1;
     // Category (1. Physical, 2. Special, 3. Status)
     public int fgCategory = 1;
-    // Does it changes a pokémon status? (1 - Yes, 2 - No)
-    public int statChange = 2;
+    // Does it changes a pokémon status? (1 - Yes (enemy), 2 - Yes (self), 0 - No)
+    public int statChange = 0;
     // What stat does it change? (1 - Attack, 2 - Special Attack, 3 - Defense, 4 - Special Defense, 5 - Speed, 6 - Accuracy, 7 - Avoidance)
     public int statChangeType = 1;
     // By how much?
@@ -32,50 +41,56 @@ public final class Moves {
     public int statusChange = 2; 
     // Which one? (1 - Confusion, 2 - Burn, 3 - Frozen, 4 - Sleep, 5 - Poison)
     public int statusChangeType = 1; 
-    
-    public Moves() {
         
-    }
-    
-    public Moves (int power, String name, int fgType, int accuracy) {
-        this.setPower(power);
-        this.setName(name);
-        this.setFgType(fgType);
-        this.setAccuracy(accuracy);
-    }
-    
-    public Moves (int power, String name, int fgType) {
-        this.setPower(power);
-        this.setName(name);
-        this.setFgType(fgType);
-    }
-    
-    public Moves (int power, String name) {
-        this.setPower(power);
-        this.setName(name);
+    public Moves () {
     }
     
     public Moves getNormalMove(int id) {
+        Moves move = new Moves();
+        move.setFgType(1);
         switch (id) {
             case 1:
-                return new Moves(40, "Water Gun");
+                // Tackle
+                move.setName("Tackle");
+                move.setPP(35);
+                move.setPower(40);
+                move.setFgCategory(1);
+                break;
             case 2:
-                Moves bubble = new Moves(30, "Bubble");
-                return bubble;
+                // Tail Whip
+                move.setName("Tail Whip");
+                move.setPP(30);
+                move.setPower(0);
+                move.setFgCategory(3);
+                move.setStatChange(1);
+                move.setStatChangeType(3);
+                break;
         }
-        return null;
+        return move;
     }
     
     public Moves getWaterMove(int id) {
+        Moves waterMove = new Moves();
+        waterMove.setFgType(2);
         switch (id) {
             case 1:
-                return new Moves(40, "Water Gun", 2);
+                // Water Gun
+                waterMove.setName("Water Gun");
+                waterMove.setPP(25);
+                waterMove.setPower(40);
+                waterMove.setFgCategory(2);
+                break;
             case 2:
-                return new Moves(30, "Bubble", 2);
-            case 3:
-                return new Moves(60, "Water Pulse", 2);
+                // Withdraw
+                waterMove.setName("Withdraw");
+                waterMove.setPP(40);
+                waterMove.setPower(0);
+                waterMove.setFgCategory(3);
+                waterMove.setStatChange(2);
+                waterMove.setStatChangeType(3);
+                break;
         }
-        return null;
+        return waterMove;
     }
     
     public String getName() {
@@ -92,6 +107,62 @@ public final class Moves {
 
     public void setPower(int power) {
         this.power = power;
+    }
+
+    public int getPP() {
+        return pp;
+    }
+
+    public void setPP(int pp) {
+        this.pp = pp;
+    }
+
+    public int getFgCategory() {
+        return fgCategory;
+    }
+
+    public void setFgCategory(int fgCategory) {
+        this.fgCategory = fgCategory;
+    }
+
+    public int getStatChange() {
+        return statChange;
+    }
+
+    public void setStatChange(int statChange) {
+        this.statChange = statChange;
+    }
+
+    public int getStatChangeType() {
+        return statChangeType;
+    }
+
+    public void setStatChangeType(int statChangeType) {
+        this.statChangeType = statChangeType;
+    }
+
+    public int getStatChangePower() {
+        return statChangePower;
+    }
+
+    public void setStatChangePower(int statChangePower) {
+        this.statChangePower = statChangePower;
+    }
+
+    public int getStatusChange() {
+        return statusChange;
+    }
+
+    public void setStatusChange(int statusChange) {
+        this.statusChange = statusChange;
+    }
+
+    public int getStatusChangeType() {
+        return statusChangeType;
+    }
+
+    public void setStatusChangeType(int statusChangeType) {
+        this.statusChangeType = statusChangeType;
     }
 
     public int getAccuracy() {
