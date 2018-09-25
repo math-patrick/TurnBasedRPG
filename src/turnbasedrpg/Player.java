@@ -7,12 +7,16 @@ package turnbasedrpg;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
+import java.net.Socket;
 import turnbasedrpg.moves.Pokemon;
 
 /**
  *
  * @author matheus.oliveira
  */
+
+
 public class Player extends JFrame {
     private int width;
     private int height;
@@ -24,6 +28,8 @@ public class Player extends JFrame {
     private JButton b3;
     private JButton b4;
     
+    private ClientSideConnection clientSideConnection;
+
     public Player (int width, int height) {
         Pokemon pokemonGetter = new Pokemon();
         this.width = width;
@@ -53,9 +59,29 @@ public class Player extends JFrame {
         contentPane.add(b4);
         this.setVisible(true);
     }
-    
+    public void connectToServer() {
+        clientSideConnection = new ClientSideConnection();
+    }
+    // Client Connection Inner Class
+    private class ClientSideConnection {
+        private Socket socket;
+        private DataInputStream dataInputStream;
+        private DataOutputStream dataOutputStream;
+        
+        public ClientSideConnection() {
+            System.out.println("Cliente conectando");
+            try {
+                socket = new Socket("localhost", 51734);
+                dataInputStream = new DataInputStream(socket.getInputStream());
+                dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            } catch (IOException ex) {
+                System.out.println(ex);
+            }
+        }
+    }
     public static void main(String[] args) {
         Player p = new Player (500, 100);
+        p.connectToServer();
         p.setUpGUI();
     }
 }
