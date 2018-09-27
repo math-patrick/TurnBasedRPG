@@ -10,6 +10,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -38,6 +40,14 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 numPlayers++;
                 System.out.println("Jogador número "+numPlayers+" se conectou!");
+                ServerSideConnection serverSideConnection = new ServerSideConnection(socket, numPlayers);
+                if (numPlayers == 1) {
+                    player1 = serverSideConnection;
+                } else {
+                    player2 = serverSideConnection;
+                }
+                Thread thread = new Thread(serverSideConnection);
+                thread.start();
             }
             System.out.println("Limite de jogadores alcançado");
         } catch (IOException ex) {
@@ -64,7 +74,16 @@ public class Server {
         
         @Override
         public void run() {
-            dataOutputStream.writeInt(playerID);
+            try {
+                dataOutputStream.writeInt(playerID);
+                dataOutputStream.flush();
+                
+//                while (true) {;
+//                    return false;
+//                }
+            } catch (IOException ex) {
+                System.out.println(ex);
+            }
         }
         
     }

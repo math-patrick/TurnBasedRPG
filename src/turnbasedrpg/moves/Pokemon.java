@@ -8,6 +8,7 @@ import java.util.Arrays;
  * @author matheus.oliveira
  */
 public class Pokemon {
+
     String name = "";
     int level = 1;
     Moves[] moves;
@@ -36,5 +37,13 @@ public class Pokemon {
         System.out.println(movesArray[3].getName());
         this.createPokemon("Squirtle", movesArray);
         return this;
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
