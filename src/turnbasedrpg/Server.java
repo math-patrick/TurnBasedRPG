@@ -22,10 +22,24 @@ public class Server {
     private int numPlayers;
     private ServerSideConnection player1;
     private ServerSideConnection player2;
+    private int turnsMade;
+    private int maxTurns;
+    private int[] values;
+    
+    private int p1ButtonNum;
+    private int p2ButtonNum;    
     
     public Server() {
         System.out.println("Servidor online!");
-        numPlayers =0;
+        numPlayers = 0;
+        turnsMade = 0;
+        maxTurns = 4;
+        values = new int[4];
+        
+        for (int i = 0; i < values.length; i++) {
+            values[i] = (int) Math.ceil(Math.random() * 100) + 1;
+        }
+        
         try {
             serverSocket = new ServerSocket(51734);
         } catch (IOException ex) {
@@ -57,16 +71,16 @@ public class Server {
     
     private class ServerSideConnection implements Runnable {
         private Socket socket;
-        private DataInputStream dataInputStream;
-        private DataOutputStream dataOutputStream;
+        private DataInputStream dataIn;
+        private DataOutputStream dataOut;
         private int playerID;
         
         public ServerSideConnection(Socket socketParameter, int id) {
             this.socket = socketParameter;
             this.playerID = id;
             try {
-                dataInputStream = new DataInputStream(socket.getInputStream());
-                dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                dataIn = new DataInputStream(socket.getInputStream());
+                dataOut = new DataOutputStream(socket.getOutputStream());
             } catch (IOException ex){
                 System.out.println(ex);
             }
@@ -75,12 +89,20 @@ public class Server {
         @Override
         public void run() {
             try {
-                dataOutputStream.writeInt(playerID);
-                dataOutputStream.flush();
+                dataOut.writeInt(playerID);
+                dataOut.writeInt(maxTurns);
+                dataOut.writeInt(values[0]);
+                dataOut.writeInt(values[1]);
+                dataOut.writeInt(values[2]);
+                dataOut.writeInt(values[3]);
+                dataOut.flush();
                 
-//                while (true) {;
-//                    return false;
-//                }
+                while (true) {
+                    if (playerID == 1) {
+                        p1ButtonNum = dataIn.readInt();
+                        System.out.println("Player 1 used " + p1ButtonNum);
+                    }
+                }
             } catch (IOException ex) {
                 System.out.println(ex);
             }
