@@ -101,6 +101,11 @@ public class Server {
                     if (playerID == 1) {
                         p1ButtonNum = dataIn.readInt();
                         System.out.println("Player 1 used " + p1ButtonNum);
+                        player2.sendButtonNum(p1ButtonNum);
+                    } else  {
+                        p2ButtonNum = dataIn.readInt();
+                        System.out.println("Player 2 used " + p1ButtonNum);
+                        player1.sendButtonNum(p2ButtonNum);
                     }
                 }
             } catch (IOException ex) {
@@ -108,6 +113,14 @@ public class Server {
             }
         }
         
+        public void sendButtonNum(int n) {
+            try {
+                dataOut.writeInt(n);
+                dataOut.flush();
+            } catch (IOException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     public static void main(String[] args) {

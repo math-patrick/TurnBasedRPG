@@ -31,10 +31,6 @@ public class Pokemon {
         movesArray[1] = new Moves().getNormalMove(2);
         movesArray[2] = new Moves().getWaterMove(1);
         movesArray[3] = new Moves().getWaterMove(2);
-        System.out.println(movesArray[0].getName());
-        System.out.println(movesArray[1].getName());
-        System.out.println(movesArray[2].getName());
-        System.out.println(movesArray[3].getName());
         this.createPokemon("Squirtle", movesArray);
         return this;
     }

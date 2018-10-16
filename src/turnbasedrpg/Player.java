@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import turnbasedrpg.moves.Pokemon;
 
 /**
@@ -115,6 +117,7 @@ public class Player extends JFrame {
                 
 //                myPoints += values[bNum -1];;  // Reduz os pontos, no meu será diferente
                 System.out.println("My health: 0");
+                clientSideConnection.sendButtonNum(1); // Ajustar para o ataque/pokémon
             }
         };
         
@@ -123,36 +126,72 @@ public class Player extends JFrame {
         b3.addActionListener(actionListener);
         b4.addActionListener(actionListener);
     }
+    
     public void toggleButtons() {
         b1.setEnabled(buttonsEnabled);
         b2.setEnabled(buttonsEnabled);
         b3.setEnabled(buttonsEnabled);
         b4.setEnabled(buttonsEnabled);
     }
+    
     public void connectToServer() {
         clientSideConnection = new ClientSideConnection();
     }
+    
+    public void startReceivingButtonNums() {
+        Thread thread;
+        thread = new Thread (new Runnable() {
+            public void run() {
+                while(true) {
+                    clientSideConnection.receiveButtonNum();
+                }
+            }
+        });
+    }
+    
     // Client Connection Inner Class
     private class ClientSideConnection {
         private Socket socket;
-        private DataInputStream dataInputStream;
-        private DataOutputStream dataOutputStream;
+        private DataInputStream dataIn;
+        private DataOutputStream dataOut;
         
         public ClientSideConnection() {
             System.out.println("Cliente conectando");
             try {
                 socket = new Socket("localhost", 51734); // Inicia o pedido de conexão ao servidor
-                dataInputStream = new DataInputStream(socket.getInputStream());
-                dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                playerID = dataInputStream.readInt();
+                dataIn = new DataInputStream(socket.getInputStream());
+                dataOut = new DataOutputStream(socket.getOutputStream());
+                playerID = dataIn.readInt();
                 System.out.println("Connected as #"+ playerID);
-                maxTurns = dataInputStream.readInt() / 2;
+                maxTurns = dataIn.readInt() / 2;
                 
             } catch (IOException ex) {
                 System.out.println(ex);
             }
         }
+        
+        public void sendButtonNum(int n) {
+            try {
+                dataOut.writeInt(n);
+                dataOut.flush();
+            } catch (IOException ex) {
+                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        public int receiveButtonNum() {
+            int num = 0;
+            try {
+                num = dataIn.readInt();
+                System.out.println("Player #2 used" + num);
+            } catch (IOException ex) {
+                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return num;
+        }
     }
+    
+    
     public static void main(String[] args) {
         Player p = new Player (500, 100);
         p.connectToServer();
