@@ -63,6 +63,11 @@ public class Player extends JFrame {
         b3 = new JButton (this.pokemon.getPokemonMove(2).getName());
         b4 = new JButton (this.pokemon.getPokemonMove(3).getName());
         
+        b1.setName("1");
+        b2.setName("2");
+        b3.setName("3");
+        b4.setName("4");
+        
         turnsMade = 0;
         myPoints = 0;
         enemyPoints = 0;
@@ -88,16 +93,24 @@ public class Player extends JFrame {
         contentPane.add(b3);
         contentPane.add(b4);
         
+        message.setText("You are player #"+playerID);
         if (playerID == 1) {
-            message.setText("You have a "+this.pokemon.getName());
             buttonsEnabled = true;
+            otherPlayerID = 2;
         } else {
             buttonsEnabled = false;
+            otherPlayerID = 1;
+            Thread t = new Thread(new Runnable() {
+                public void run() {
+                    updateTurn();
+                }
+            });
+            t.start();
         }
+        
         toggleButtons();
         
         this.setVisible(true);
-        setUpButtons();
     }
 
     public void setUpButtons() {
@@ -110,14 +123,22 @@ public class Player extends JFrame {
                 String moveName = button.getText();
                 
                 message.setText("Used "+button.getText()+"!");
+                System.out.println("Used "+button.getText()+"!");
                 turnsMade++;
                 buttonsEnabled = false;
                 
                 toggleButtons();
                 
 //                myPoints += values[bNum -1];;  // Reduz os pontos, no meu será diferente
-                System.out.println("My health: 0");
-                clientSideConnection.sendButtonNum(1); // Ajustar para o ataque/pokémon
+                System.out.println("My health: "+myPoints);
+                clientSideConnection.sendButtonNum(Integer.parseInt(button.getName())); // Ajustar para o ataque/pokém
+                
+                Thread t = new Thread(new Runnable() {
+                    public void run() {
+                        updateTurn();
+                    }
+                });
+                t.start();
             }
         };
         
@@ -134,21 +155,18 @@ public class Player extends JFrame {
         b4.setEnabled(buttonsEnabled);
     }
     
+    public void updateTurn() {
+        int n = clientSideConnection.receiveButtonNum();
+        message.setText("Your enemy used "+n+". Your turn!");
+        enemyPoints += n;
+        buttonsEnabled = true;
+        toggleButtons();
+    }
+    
     public void connectToServer() {
         clientSideConnection = new ClientSideConnection();
     }
-    
-    public void startReceivingButtonNums() {
-        Thread thread;
-        thread = new Thread (new Runnable() {
-            public void run() {
-                while(true) {
-                    clientSideConnection.receiveButtonNum();
-                }
-            }
-        });
-    }
-    
+   
     // Client Connection Inner Class
     private class ClientSideConnection {
         private Socket socket;
@@ -164,7 +182,6 @@ public class Player extends JFrame {
                 playerID = dataIn.readInt();
                 System.out.println("Connected as #"+ playerID);
                 maxTurns = dataIn.readInt() / 2;
-                
             } catch (IOException ex) {
                 System.out.println(ex);
             }
@@ -183,7 +200,7 @@ public class Player extends JFrame {
             int num = 0;
             try {
                 num = dataIn.readInt();
-                System.out.println("Player #2 used" + num);
+                System.out.println("Player #"+otherPlayerID+" used" + num);
             } catch (IOException ex) {
                 Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
             }

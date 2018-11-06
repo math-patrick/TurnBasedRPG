@@ -10,12 +10,12 @@ public final class Pokemon {
 
     int level = 1;
 
-    int[] physicalAttack;
-    int[] specialAttack;
-    int[] physicalDefense;
-    int[] specialDefense;
-    int[] speed;
-    int[] health;
+    int[] physicalAttack = new int[3];
+    int[] specialAttack = new int[3];
+    int[] physicalDefense = new int[3];
+    int[] specialDefense = new int[3];
+    int[] speed = new int[3];
+    int[] health = new int[3];
 
     String name = "";
     Moves[] moves;

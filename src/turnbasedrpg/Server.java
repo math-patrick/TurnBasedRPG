@@ -91,10 +91,6 @@ public class Server {
             try {
                 dataOut.writeInt(playerID);
                 dataOut.writeInt(maxTurns);
-                dataOut.writeInt(values[0]);
-                dataOut.writeInt(values[1]);
-                dataOut.writeInt(values[2]);
-                dataOut.writeInt(values[3]);
                 dataOut.flush();
                 
                 while (true) {
@@ -115,6 +111,7 @@ public class Server {
         
         public void sendButtonNum(int n) {
             try {
+                System.out.println("Sent: "+n);
                 dataOut.writeInt(n);
                 dataOut.flush();
             } catch (IOException ex) {
