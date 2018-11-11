@@ -5,11 +5,13 @@
  */
 package turnbasedrpg.moves;
 
+import java.io.Serializable;
+
 /**
  *
  * @author matheus.oliveira
  */
-public final class Moves {
+public final class Moves implements Serializable {
 
     /**
      * Move name

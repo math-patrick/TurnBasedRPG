@@ -20,7 +20,7 @@ public class Combat {
         player2 = pokemon2;
     }
     
-    public void calculateDamage(int moveID, int player) {
+    public int calculateDamage(int moveID, int player) {
         Pokemon attacker = (player == 1) ? player1 : player2;
         Pokemon defender = (player == 1) ? player2 : player1;
         Moves move = attacker.getPokemonMove(moveID);
@@ -33,6 +33,6 @@ public class Combat {
         int damage = ((((2 * attacker.getLevel() / 5 + 2) * attacker.getAttackValue(category) * move.getPower() / defender.getDefenseValue(category)) / 50) + 2) 
                 /** STAB * Weakness/Resistance * */ * randomNumber / 100;
 
-        
+        return damage;
     }
 }

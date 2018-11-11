@@ -1,13 +1,14 @@
 package turnbasedrpg.moves;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  *
  * @author matheus.oliveira
  */
-public final class Pokemon {
-
+public final class Pokemon implements Serializable {
+    int number = 0;
     int level = 1;
 
     int[] physicalAttack = new int[3];
@@ -69,6 +70,7 @@ public final class Pokemon {
         movesArray[2] = new Moves().getWaterMove(1);
         movesArray[3] = new Moves().getWaterMove(2);
         this.createPokemon("Squirtle", movesArray);
+        this.setNumber(7);
         return this;
     }
 
@@ -81,6 +83,16 @@ public final class Pokemon {
         this.name = name;
     }
 
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    
+    
     // Nível
     public int getLevel() {
         return level;

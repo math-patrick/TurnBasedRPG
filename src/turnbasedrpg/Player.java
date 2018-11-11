@@ -9,10 +9,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.Socket;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import turnbasedrpg.moves.Pokemon;
 
 /**
@@ -27,12 +32,16 @@ public class Player extends JFrame {
     private Container contentPane;
     private JTextArea message;
     private JLabel label;
+    
     private Pokemon pokemon;
+    private Pokemon enemyPokemon;
     
     private JButton b1;
     private JButton b2;
     private JButton b3;
     private JButton b4;
+    private JLabel image;
+    private JLabel image2;
     
     private int playerID;
     private int otherPlayerID;
@@ -45,7 +54,7 @@ public class Player extends JFrame {
     
     private ClientSideConnection clientSideConnection;
 
-    public Player (int width, int height) {
+    public Player (int width, int height) throws IOException, URISyntaxException {
         // Configura as variavéis
         Pokemon pokemonGetter = new Pokemon();
         this.width = width;
@@ -63,6 +72,18 @@ public class Player extends JFrame {
         b3 = new JButton (this.pokemon.getPokemonMove(2).getName());
         b4 = new JButton (this.pokemon.getPokemonMove(3).getName());
         
+        URI img = getClass().getResource("/turnbasedrpg/pokemon/back/"+pokemon.getNumber()+".png").toURI();
+        BufferedImage myPicture = ImageIO.read(new File((img)));
+
+        image = new JLabel(new ImageIcon(myPicture));
+        image.setMinimumSize(new Dimension(80, 80));
+        
+        URI img2 = getClass().getResource("/turnbasedrpg/pokemon/egg.png").toURI();
+        BufferedImage myPicture2 = ImageIO.read(new File((img2)));
+
+        image2 = new JLabel(new ImageIcon(myPicture2));
+        image2.setMinimumSize(new Dimension(80, 80));
+        
         b1.setName("1");
         b2.setName("2");
         b3.setName("3");
@@ -74,12 +95,14 @@ public class Player extends JFrame {
     }
     
     public void setUpGUI() {
-        this.setSize (this.width, this.height);
+        this.setSize (200, 300);
         this.setTitle ("Player #"+playerID);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-        contentPane.setLayout(new GridLayout(1, 5));
-        contentPane.add(message);
-        contentPane.add(label);
+        contentPane.setLayout(new GridLayout(4, 2));
+        contentPane.add(image);
+        contentPane.add(image2);
         
         // Adiciona mensagens na caixa de mensagens
         message.setText("Creating game..");
@@ -93,6 +116,8 @@ public class Player extends JFrame {
         contentPane.add(b3);
         contentPane.add(b4);
         
+        contentPane.add(message);
+        
         message.setText("You are player #"+playerID);
         if (playerID == 1) {
             buttonsEnabled = true;
@@ -102,7 +127,15 @@ public class Player extends JFrame {
             otherPlayerID = 1;
             Thread t = new Thread(new Runnable() {
                 public void run() {
-                    updateTurn();
+                    try {
+                        updateTurn();
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (URISyntaxException ex) {
+                        Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             });
             t.start();
@@ -135,7 +168,15 @@ public class Player extends JFrame {
                 
                 Thread t = new Thread(new Runnable() {
                     public void run() {
-                        updateTurn();
+                        try {
+                            updateTurn();
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (URISyntaxException ex) {
+                            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 });
                 t.start();
@@ -155,33 +196,41 @@ public class Player extends JFrame {
         b4.setEnabled(buttonsEnabled);
     }
     
-    public void updateTurn() {
-        int n = clientSideConnection.receiveButtonNum();
-        message.setText("Your enemy used "+n+". Your turn!");
-        enemyPoints += n;
+    public void updateTurn() throws ClassNotFoundException, IOException, URISyntaxException {
+        Pokemon n = clientSideConnection.receivePokemon();
+        message.setText("Your enemy is a "+n.getName()+". Your turn!");
+        
+        // Atualiza a imagem do oponente
+        URI img = getClass().getResource("/turnbasedrpg/pokemon/"+n.getNumber()+".png").toURI();
+        BufferedImage enemy = ImageIO.read(new File((img)));
+        image2.setIcon(new ImageIcon(enemy));
+        
+        // Habilita botões
         buttonsEnabled = true;
         toggleButtons();
     }
     
     public void connectToServer() {
-        clientSideConnection = new ClientSideConnection();
+        clientSideConnection = new ClientSideConnection(this.pokemon);
     }
    
     // Client Connection Inner Class
     private class ClientSideConnection {
         private Socket socket;
-        private DataInputStream dataIn;
-        private DataOutputStream dataOut;
+        private ObjectInputStream dataIn;
+        private ObjectOutputStream dataOut;
         
-        public ClientSideConnection() {
+        public ClientSideConnection(Pokemon pokemon) {
             System.out.println("Cliente conectando");
             try {
                 socket = new Socket("localhost", 51734); // Inicia o pedido de conexão ao servidor
-                dataIn = new DataInputStream(socket.getInputStream());
-                dataOut = new DataOutputStream(socket.getOutputStream());
+                dataOut = new ObjectOutputStream(socket.getOutputStream());
+                dataOut.flush();
+                dataIn = new ObjectInputStream(socket.getInputStream());
                 playerID = dataIn.readInt();
                 System.out.println("Connected as #"+ playerID);
                 maxTurns = dataIn.readInt() / 2;
+                sendPokemon(pokemon);
             } catch (IOException ex) {
                 System.out.println(ex);
             }
@@ -196,20 +245,28 @@ public class Player extends JFrame {
             }
         }
         
-        public int receiveButtonNum() {
-            int num = 0;
+        public void sendPokemon(Pokemon n) {
             try {
-                num = dataIn.readInt();
-                System.out.println("Player #"+otherPlayerID+" used" + num);
+                dataOut.writeObject(n);
+                dataOut.flush();
+            } catch (IOException ex) {
+                System.out.println("Erro ao enviar o "+n.getName());
+                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        public Pokemon receivePokemon() throws ClassNotFoundException {
+            try {
+                enemyPokemon = (Pokemon) dataIn.readObject();
             } catch (IOException ex) {
                 Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
             }
-            return num;
+            return enemyPokemon;
         }
     }
     
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, URISyntaxException {
         Player p = new Player (500, 100);
         p.connectToServer();
         p.setUpGUI();
