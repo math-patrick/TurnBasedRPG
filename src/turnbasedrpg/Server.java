@@ -96,6 +96,7 @@ public class Server {
 
         @Override
         public void run() {
+            Combat combat = new Combat();
             try {
                 dataOut.writeInt(playerID);
                 dataOut.writeInt(maxTurns);
@@ -103,24 +104,38 @@ public class Server {
                 
                 if (playerID == 1) {
                     p1Pokemon = (Pokemon) dataIn.readObject();
+                    combat.setPlayer1(p1Pokemon);
                 } else {
                     p2Pokemon = (Pokemon) dataIn.readObject();
+                    combat.setPlayer2(p2Pokemon);
                 }
-                Combat combat = new Combat(p1Pokemon, p2Pokemon);
-                p1ButtonNum = 0;
-                p2ButtonNum = 0;
+                
+                p1ButtonNum = -1;
+                p2ButtonNum = -1;
                 while (true) {
-                    if (p1Pokemon!=null && p2Pokemon!=null) {
+                    if (p1Pokemon!=null && p2Pokemon!=null && combat.isReady()) {
                         if (playerID == 1) {
                             p1ButtonNum = dataIn.readInt();
-    //                        int damage = combat.calculateDamage(p1ButtonNum, playerID);
-                            System.out.println("Player 1 dealt " + 1);
+                            int damage = combat.calculateDamage(p1ButtonNum, playerID);
+                            String moveName = p1Pokemon.getPokemonMove(p1ButtonNum).getName();
+                            System.out.println("Player "+playerID+" used " + moveName + " and dealt "+ damage +" damage");
+                            
+                            p1Pokemon = combat.getPlayer1();
+                            p2Pokemon = combat.getPlayer2();
+                            
                             player2.sendPokemon(p1Pokemon);
+                            player2.sendPokemon(p2Pokemon);
                         } else {
                             p2ButtonNum = dataIn.readInt();
-    //                        int damage = combat.calculateDamage(p1ButtonNum, playerID);
-                            System.out.println("Player 2 dealt " + 2);
-                            player1.sendPokemon(p2Pokemon);
+                            int damage = combat.calculateDamage(p2ButtonNum, playerID);
+                            String moveName = p2Pokemon.getPokemonMove(p2ButtonNum).getName();
+                            System.out.println("Player "+playerID+" used " + moveName + " and dealt "+ damage +" damage");
+                            
+                            p1Pokemon = combat.getPlayer1();
+                            p2Pokemon = combat.getPlayer2();
+                            
+                            player2.sendPokemon(p2Pokemon);
+                            player2.sendPokemon(p1Pokemon);
                         }
                     }
                 }

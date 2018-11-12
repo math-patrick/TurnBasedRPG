@@ -197,14 +197,19 @@ public class Player extends JFrame {
     }
     
     public void updateTurn() throws ClassNotFoundException, IOException, URISyntaxException {
-        Pokemon n = clientSideConnection.receivePokemon();
-        message.setText("Your enemy is a "+n.getName()+". Your turn!");
+        Pokemon enemy = clientSideConnection.receivePokemon();
+        Pokemon player = clientSideConnection.receivePokemon();
+        message.setText("Your enemy is a "+enemy.getName()+". Your turn!");
         
         // Atualiza a imagem do oponente
-        URI img = getClass().getResource("/turnbasedrpg/pokemon/"+n.getNumber()+".png").toURI();
-        BufferedImage enemy = ImageIO.read(new File((img)));
-        image2.setIcon(new ImageIcon(enemy));
+        URI img = getClass().getResource("/turnbasedrpg/pokemon/"+enemy.getNumber()+".png").toURI();
+        BufferedImage enemyImage = ImageIO.read(new File((img)));
+        image2.setIcon(new ImageIcon(enemyImage));
         
+        pokemon = player;
+        enemyPokemon = enemy;
+        
+        System.out.println("Your health: "+pokemon.getHealthValue());
         // Habilita botões
         buttonsEnabled = true;
         toggleButtons();
