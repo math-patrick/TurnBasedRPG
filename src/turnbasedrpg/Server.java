@@ -27,21 +27,21 @@ public class Server {
     private int numPlayers;
     private ServerSideConnection player1;
     private ServerSideConnection player2;
-    private int turnsMade;
-    private int maxTurns;
     private int[] values;
 
     private int p1ButtonNum;
     private Pokemon p1Pokemon;
     private int p2ButtonNum;
     private Pokemon p2Pokemon;
+    
+    private Combat combat;
 
     public Server() {
         System.out.println("Servidor online!");
         numPlayers = 0;
-        turnsMade = 0;
-        maxTurns = 4;
         values = new int[4];
+        
+        combat = new Combat();
 
         for (int i = 0; i < values.length; i++) {
             values[i] = (int) Math.ceil(Math.random() * 100) + 1;
@@ -96,10 +96,8 @@ public class Server {
 
         @Override
         public void run() {
-            Combat combat = new Combat();
             try {
                 dataOut.writeInt(playerID);
-                dataOut.writeInt(maxTurns);
                 dataOut.flush();
                 
                 if (playerID == 1) {
@@ -134,13 +132,12 @@ public class Server {
                             p1Pokemon = combat.getPlayer1();
                             p2Pokemon = combat.getPlayer2();
                             
-                            player2.sendPokemon(p2Pokemon);
-                            player2.sendPokemon(p1Pokemon);
+                            player1.sendPokemon(p2Pokemon);
+                            player1.sendPokemon(p1Pokemon);
                         }
                     }
                 }
             } catch (IOException ex) {
-                System.out.println("10");
                 System.out.println(ex);
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
@@ -149,7 +146,6 @@ public class Server {
 
         public void sendPokemon(Pokemon n) {
             try {
-                System.out.println("Sent: " + n);
                 dataOut.writeObject(n);
                 dataOut.flush();
             } catch (IOException ex) {

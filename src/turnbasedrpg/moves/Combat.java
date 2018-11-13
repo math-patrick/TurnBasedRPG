@@ -19,11 +19,7 @@ public class Combat {
     }
     
     public boolean isReady() {
-        if (player1 == null || player2 == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return !(player1 == null || player2 == null);
     }
     
 //    public int turnMade(int player1Move, int player2Move) {;;
@@ -48,16 +44,22 @@ public class Combat {
 
         //  Fórmula de calculo de dano: Damage = ((((2 * Level / 5 + 2) * AttackStat * AttackPower / DefenseStat) / 50) + 2) * STAB * Weakness/Resistance * RandomNumber / 100
         int category = move.getFgCategory();
-        int damage = ((((2 * attacker.getLevel() / 5 + 2) * attacker.getAttackValue(category) * move.getPower() / defender.getDefenseValue(category)) / 50) + 2);
-                /** STAB * Weakness/Resistance *  * randomNumber / 100;;*/
+        int damage = ((((2 * attacker.getLevel() / 5 + 2) * attacker.getAttackValue(category) * move.getPower() / defender.getDefenseValue(category)) / 50) + 2) * randomNumber / 100;
+                /** STAB * Weakness/Resistance *  */ 
 
         int newHealth = defender.getHealthValue() - damage;
         if (newHealth < 0) {
             newHealth = 0;
         }
         
+//        System.out.println("Move used: "+moveID);;
+//        System.out.println("Damage dealt: "+damage);
+//        System.out.println("New "+defender.getName()+" health: "+newHealth);
+        
         defender.setHealthValue(newHealth);
         
+        player1 = (player == 1) ? attacker : defender;
+        player2 = (player == 1) ? defender : attacker;        
         return damage;
     }
 

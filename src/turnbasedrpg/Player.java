@@ -45,10 +45,6 @@ public class Player extends JFrame {
     
     private int playerID;
     private int otherPlayerID;
-    private int turnsMade;
-    private int maxTurns;
-    private int myPoints;
-    private int enemyPoints;
     
     private boolean buttonsEnabled;
     
@@ -72,26 +68,22 @@ public class Player extends JFrame {
         b3 = new JButton (this.pokemon.getPokemonMove(2).getName());
         b4 = new JButton (this.pokemon.getPokemonMove(3).getName());
         
+        // Imagem do jogador
         URI img = getClass().getResource("/turnbasedrpg/pokemon/back/"+pokemon.getNumber()+".png").toURI();
         BufferedImage myPicture = ImageIO.read(new File((img)));
-
         image = new JLabel(new ImageIcon(myPicture));
         image.setMinimumSize(new Dimension(80, 80));
         
+        // Imagem do oponente (ovo)
         URI img2 = getClass().getResource("/turnbasedrpg/pokemon/egg.png").toURI();
         BufferedImage myPicture2 = ImageIO.read(new File((img2)));
-
         image2 = new JLabel(new ImageIcon(myPicture2));
         image2.setMinimumSize(new Dimension(80, 80));
         
-        b1.setName("1");
-        b2.setName("2");
-        b3.setName("3");
-        b4.setName("4");
-        
-        turnsMade = 0;
-        myPoints = 0;
-        enemyPoints = 0;
+        b1.setName("0");
+        b2.setName("1");
+        b3.setName("2");
+        b4.setName("3");
     }
     
     public void setUpGUI() {
@@ -129,11 +121,7 @@ public class Player extends JFrame {
                 public void run() {
                     try {
                         updateTurn();
-                    } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex) {
-                        Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (URISyntaxException ex) {
+                    } catch (ClassNotFoundException | IOException | URISyntaxException ex) {
                         Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
@@ -157,24 +145,17 @@ public class Player extends JFrame {
                 
                 message.setText("Used "+button.getText()+"!");
                 System.out.println("Used "+button.getText()+"!");
-                turnsMade++;
                 buttonsEnabled = false;
                 
                 toggleButtons();
-                
-//                myPoints += values[bNum -1];;  // Reduz os pontos, no meu será diferente
-                System.out.println("My health: "+myPoints);
+              
                 clientSideConnection.sendButtonNum(Integer.parseInt(button.getName())); // Ajustar para o ataque/pokém
                 
                 Thread t = new Thread(new Runnable() {
                     public void run() {
                         try {
                             updateTurn();
-                        } catch (ClassNotFoundException ex) {
-                            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (IOException ex) {
-                            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (URISyntaxException ex) {
+                        } catch (ClassNotFoundException | IOException | URISyntaxException ex) {
                             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
@@ -206,10 +187,10 @@ public class Player extends JFrame {
         BufferedImage enemyImage = ImageIO.read(new File((img)));
         image2.setIcon(new ImageIcon(enemyImage));
         
-        pokemon = player;
-        enemyPokemon = enemy;
-        
-        System.out.println("Your health: "+pokemon.getHealthValue());
+        this.pokemon = player;
+        this.enemyPokemon = enemy;
+        message.setText("Your health: "+this.pokemon.getHealthValue() +
+                        "\nEnemy health: "+this.enemyPokemon.getHealthValue());
         // Habilita botões
         buttonsEnabled = true;
         toggleButtons();
@@ -234,7 +215,6 @@ public class Player extends JFrame {
                 dataIn = new ObjectInputStream(socket.getInputStream());
                 playerID = dataIn.readInt();
                 System.out.println("Connected as #"+ playerID);
-                maxTurns = dataIn.readInt() / 2;
                 sendPokemon(pokemon);
             } catch (IOException ex) {
                 System.out.println(ex);
