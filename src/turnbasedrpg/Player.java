@@ -92,6 +92,7 @@ public class Player extends JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+        
         contentPane.setLayout(new GridLayout(4, 2));
         contentPane.add(image);
         contentPane.add(image2);
@@ -178,19 +179,18 @@ public class Player extends JFrame {
     }
     
     public void updateTurn() throws ClassNotFoundException, IOException, URISyntaxException {
-        Pokemon enemy = clientSideConnection.receivePokemon();
-        Pokemon player = clientSideConnection.receivePokemon();
-        message.setText("Your enemy is a "+enemy.getName()+". Your turn!");
+        setPokemon(clientSideConnection.receivePokemon());
+        setEnemyPokemon(clientSideConnection.receivePokemon());
+        
+        message.setText("Your enemy is a "+getEnemyPokemon().getName()+". Your turn!");
         
         // Atualiza a imagem do oponente
-        URI img = getClass().getResource("/turnbasedrpg/pokemon/"+enemy.getNumber()+".png").toURI();
+        URI img = getClass().getResource("/turnbasedrpg/pokemon/"+getEnemyPokemon().getNumber()+".png").toURI();
         BufferedImage enemyImage = ImageIO.read(new File((img)));
         image2.setIcon(new ImageIcon(enemyImage));
         
-        this.pokemon = player;
-        this.enemyPokemon = enemy;
-        message.setText("Your health: "+this.pokemon.getHealthValue() +
-                        "\nEnemy health: "+this.enemyPokemon.getHealthValue());
+        message.setText("Your health: "+getPokemon().getHealthValue()+
+                        "\nEnemy health: "+getEnemyPokemon().getHealthValue());
         // Habilita botões
         buttonsEnabled = true;
         toggleButtons();
@@ -241,12 +241,14 @@ public class Player extends JFrame {
         }
         
         public Pokemon receivePokemon() throws ClassNotFoundException {
+            Pokemon pokemonReceived = null;
             try {
-                enemyPokemon = (Pokemon) dataIn.readObject();
+                pokemonReceived = (Pokemon) dataIn.readObject();
+                System.out.println(pokemonReceived.getHealthValue());
             } catch (IOException ex) {
                 Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
             }
-            return enemyPokemon;
+            return pokemonReceived;
         }
     }
     
@@ -257,4 +259,22 @@ public class Player extends JFrame {
         p.setUpGUI();
         p.setUpButtons();
     }
+
+    public Pokemon getPokemon() {
+        return pokemon;
+    }
+
+    public void setPokemon(Pokemon pokemon) {
+        this.pokemon = pokemon;
+    }
+
+    public Pokemon getEnemyPokemon() {
+        return enemyPokemon;
+    }
+
+    public void setEnemyPokemon(Pokemon enemyPokemon) {
+        this.enemyPokemon = enemyPokemon;
+    }
+    
+    
 }

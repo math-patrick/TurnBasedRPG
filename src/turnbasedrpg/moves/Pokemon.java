@@ -46,11 +46,11 @@ public final class Pokemon implements Serializable {
     }
 
     public int calculateStatValue(int stat, int IV, int isHealth) {
-        return (((IV + 2 * stat) * level / 100) + 10 + level);
+        return ((((stat + IV) * 2) * level)/100) + level * 10; 
     }
 
     public int calculateStatValue(int stat, int IV) {
-        return (((IV + 2 * stat) * level / 100) + 5); // * Nature Value
+        return ((((stat + IV) * 2) * level)/100) + 5; 
     }
 
     public void createPokemon(String name, Moves[] moves) {

@@ -101,39 +101,39 @@ public class Server {
                 dataOut.flush();
                 
                 if (playerID == 1) {
-                    p1Pokemon = (Pokemon) dataIn.readObject();
-                    combat.setPlayer1(p1Pokemon);
+                    setP1Pokemon((Pokemon) dataIn.readObject());
+                    combat.setPlayer1(getP1Pokemon());
                 } else {
-                    p2Pokemon = (Pokemon) dataIn.readObject();
-                    combat.setPlayer2(p2Pokemon);
+                    setP2Pokemon((Pokemon) dataIn.readObject());
+                    combat.setPlayer2(getP2Pokemon());
                 }
                 
                 p1ButtonNum = -1;
                 p2ButtonNum = -1;
                 while (true) {
-                    if (p1Pokemon!=null && p2Pokemon!=null && combat.isReady()) {
+                    if (getP1Pokemon()!=null && getP2Pokemon()!=null && combat.isReady()) {
                         if (playerID == 1) {
                             p1ButtonNum = dataIn.readInt();
                             int damage = combat.calculateDamage(p1ButtonNum, playerID);
-                            String moveName = p1Pokemon.getPokemonMove(p1ButtonNum).getName();
+                            String moveName = getP1Pokemon().getPokemonMove(p1ButtonNum).getName();
                             System.out.println("Player "+playerID+" used " + moveName + " and dealt "+ damage +" damage");
+                           
+                            setP1Pokemon(combat.getPlayer1());
+                            setP2Pokemon(combat.getPlayer2());
                             
-                            p1Pokemon = combat.getPlayer1();
-                            p2Pokemon = combat.getPlayer2();
-                            
-                            player2.sendPokemon(p1Pokemon);
-                            player2.sendPokemon(p2Pokemon);
+                            player2.sendPokemon(getP2Pokemon());
+                            player2.sendPokemon(getP1Pokemon());
                         } else {
                             p2ButtonNum = dataIn.readInt();
                             int damage = combat.calculateDamage(p2ButtonNum, playerID);
-                            String moveName = p2Pokemon.getPokemonMove(p2ButtonNum).getName();
+                            String moveName = getP2Pokemon().getPokemonMove(p2ButtonNum).getName();
                             System.out.println("Player "+playerID+" used " + moveName + " and dealt "+ damage +" damage");
                             
-                            p1Pokemon = combat.getPlayer1();
-                            p2Pokemon = combat.getPlayer2();
+                            setP1Pokemon(combat.getPlayer1());
+                            setP2Pokemon(combat.getPlayer2());
                             
-                            player1.sendPokemon(p2Pokemon);
-                            player1.sendPokemon(p1Pokemon);
+                            player1.sendPokemon(getP1Pokemon());
+                            player1.sendPokemon(getP2Pokemon());
                         }
                     }
                 }
@@ -146,8 +146,9 @@ public class Server {
 
         public void sendPokemon(Pokemon n) {
             try {
+                System.out.println("Sent wit health "+n.getHealthValue());
                 dataOut.writeObject(n);
-                dataOut.flush();
+                dataOut.reset();
             } catch (IOException ex) {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -158,4 +159,22 @@ public class Server {
         Server gs = new Server();
         gs.acceptConnections();
     }
+
+    public Pokemon getP1Pokemon() {
+        return p1Pokemon;
+    }
+
+    public void setP1Pokemon(Pokemon p1Pokemon) {
+        this.p1Pokemon = p1Pokemon;
+    }
+
+    public Pokemon getP2Pokemon() {
+        return p2Pokemon;
+    }
+
+    public void setP2Pokemon(Pokemon p2Pokemon) {
+        this.p2Pokemon = p2Pokemon;
+    }
+    
+    
 }
