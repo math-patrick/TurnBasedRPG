@@ -16,72 +16,66 @@ public class Combat implements Serializable {
 
     Pokemon player1;
     Pokemon player2;
-    int damage;
-    boolean isCrit;
-    int effective = 1;
-    private String moveUsed;
-    int lastPlayer;
-
+    
+    CombatLog combatLog1;
+    CombatLog combatLog2;
+    
+    int first;
+    
     public boolean isReady() {
         return !(player1 == null || player2 == null);
     }
 
-    public Pokemon calculateSpeedPriority() {
+    public int calculateSpeedPriority() {
         if (player1.getSpeedValue() > player2.getSpeedValue()) {
-            return player1;
+            return 1;
         } else {
-            return player2;
+            return 2;
         }
     }
 
-    public void calculateDamage(int moveID, int player) {
-        setLastPlayer(player);
-        setDamage(0);
-        setIsCrit(false);
-        setEffective(0);
-        setMoveUsed("");
-
-        Pokemon attacker = (player == 1) ? player1 : player2;
-        Pokemon defender = (player == 1) ? player2 : player1;
-        Moves move = attacker.getPokemonMove(moveID);
-
-        Random rand = new Random();
-
-        //  Fórmula de calculo de dano: Damage = ((((2 * Level / 5 + 2) * AttackStat * AttackPower / DefenseStat) / 50) + 2) * STAB * Weakness/Resistance * RandomNumber / 100
-        int category = move.getCategory();
-        setMoveUsed(move.getName());
-
-        System.out.println("Attacker level: " + attacker.getLevel());
-        System.out.println("Attacker attack: " + attacker.getAttackValue(category));
-        System.out.println("Attacker defense: " + defender.getDefenseValue(category));
-        double damage = (((((2 * attacker.getLevel() / 5.0)) + 2)
-                * move.getPower()
-                * (attacker.getAttackValue(category) / defender.getDefenseValue(category))) / 50.0) + 2;
-
-        setIsCrit(rand.nextInt(24) == 1);
-        double randomNumber = (rand.nextInt(16) + 85) / 100.0;
-        double effective = 1;
-        double STAB = (int) ((attacker.getPrimaryType() == move.getType() || attacker.getSecondaryType() == move.getType())
-                ? 1.5 : 1);
-        double modifier = (1 * (getIsCrit() ? 1.5 : 1) * (randomNumber) * STAB * effective);
-        System.out.println(damage);
-        System.out.println(modifier);
-        System.out.println(randomNumber);
-        setDamage((int) (damage * modifier));
-        /**
-         * STAB * Weakness/Resistance *
-         */
-
-        double newHealth = defender.getHealthValue() - getDamage();
-        if (newHealth < 0) {
-            newHealth = 0;
+    public void calculateDamage(int moveID, int moveID2) {
+        Pokemon attacker;
+        Pokemon defender;
+        Moves attackerMove;
+        Moves defenderMove;
+        
+        if (calculateSpeedPriority() == 1) {
+            attacker = player1;
+            defender = player1;
+            attackerMove = attacker.getPokemonMove(moveID);
+            defenderMove = defender.getPokemonMove(moveID);
+            first = 1;
+        } else {
+            attacker = player2;
+            defender = player2;
+            attackerMove = attacker.getPokemonMove(moveID2);
+            defenderMove = defender.getPokemonMove(moveID2);
+            first = 2;
         }
 
-        defender.setHealthValue(newHealth);
+        double dmgFirst = DamageCalculation(attacker, defender, attackerMove);
+        double healthDefender = defender.getHealthValue() - dmgFirst;
+        double healthAttacker = attacker.getHealthValue();
 
-        setPlayer1((player == 1) ? attacker : defender);
-        setPlayer2((player == 1) ? defender : attacker);
+        if (healthDefender < 0) {
+            healthDefender = 0;
+        } else {
+            double dmgSecond = damageCalc(defender, attacker, defenderMove);
+            healthAttacker = healthAttacker - dmgSecond;
+            
+            if (healthAttacker < 0) {
+                healthAttacker = 0;
+            }
+        }
+        
+        defender.setHealthValue(healthDefender);
+        attacker.setHealthValue(healthAttacker);
+        
+        setPlayer1((calculateSpeedPriority() == 1) ? attacker : defender);
+        setPlayer2((calculateSpeedPriority() == 1) ? defender : attacker);
     }
+    
 
     public Pokemon getPlayer1() {
         return this.player1;
@@ -98,45 +92,4 @@ public class Combat implements Serializable {
     public void setPlayer2(Pokemon p2) {
         this.player2 = p2;
     }
-
-    public int getDamage() {
-        return damage;
-    }
-
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
-
-    public boolean getIsCrit() {
-        return isCrit;
-    }
-
-    public void setIsCrit(boolean isCrit) {
-        this.isCrit = isCrit;
-    }
-
-    public int getEffective() {
-        return effective;
-    }
-
-    public void setEffective(int effective) {
-        this.effective = effective;
-    }
-
-    public String getMoveUsed() {
-        return moveUsed;
-    }
-
-    public void setMoveUsed(String moveUsed) {
-        this.moveUsed = moveUsed;
-    }
-
-    public int getLastPlayer() {
-        return lastPlayer;
-    }
-
-    public void setLastPlayer(int lastPlayer) {
-        this.lastPlayer = lastPlayer;
-    }
-
 }

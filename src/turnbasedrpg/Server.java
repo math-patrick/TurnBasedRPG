@@ -107,17 +107,12 @@ public class Server {
                     if (getP1Pokemon() != null && getP2Pokemon() != null && combat.isReady()) {
                         if (playerID == 1) {
                             p1ButtonNum = dataIn.readInt();
-                            combat.calculateDamage(p1ButtonNum, playerID);
-
-                            setP1Pokemon(combat.getPlayer1());
-                            setP2Pokemon(combat.getPlayer2());
-
-                            player1.sendCombat(combat);
-                            player2.sendCombat(combat);
                         } else {
                             p2ButtonNum = dataIn.readInt();
-
-                            combat.calculateDamage(p2ButtonNum, playerID);
+                        }
+                        
+                        if (p1ButtonNum!=-1 && p2ButtonNum!=-1) {
+                            combat.calculateDamage(p1ButtonNum, p2ButtonNum);
 
                             setP1Pokemon(combat.getPlayer1());
                             setP2Pokemon(combat.getPlayer2());
