@@ -7,25 +7,24 @@ import java.util.Random;
  *
  * @author matheus.oliveira
  */
-public final class Pokemon implements Serializable {
-    int number = 0;
-    int level = 1;
-
-    int[] physicalAttack = new int[3];
-    int[] specialAttack = new int[3];
-    int[] physicalDefense = new int[3];
-    int[] specialDefense = new int[3];
-    int[] speed = new int[3];
-    int[] health = new int[3];
-
+public class Pokemon implements Serializable {
     String name = "";
     Moves[] moves;
+    int number = 0;
+    int level = 1;
+    int primaryType = 0;
+    int secondaryType = 0;
 
-    public Pokemon() {
+    double[] physicalAttack = new double[3];
+    double[] specialAttack = new double[3];
+    double[] physicalDefense = new double[3];
+    double[] specialDefense = new double[3];
+    double[] speed = new double[3];
+    double[] health = new double[3];
+    double maxhealth;
+
+    public void calculateStats() {
         Random rand = new Random();
-        // Configura o nível
-        setLevel(50);
-
         // Gera IVs aleatórios
         setPhysicalAttackIV(rand.nextInt(31));
         setSpecialAttackIV(rand.nextInt(31));
@@ -36,6 +35,7 @@ public final class Pokemon implements Serializable {
 
         // Calcula os valores dos stats
         setHealthValue(calculateStatValue(getHealthStat(), getHealthIV(), 1));
+        setMaxHealthValue(getHealthValue());
         setSpeedValue(calculateStatValue(getSpeedStat(), getSpeedIV()));
         // Physical
         setDefenseValue(calculateStatValue(getDefenseStat(1), getPhysicalDefenseIV()), 1);
@@ -45,33 +45,16 @@ public final class Pokemon implements Serializable {
         setAttackValue(calculateStatValue(getAttackStat(2), getSpecialAttackIV()), 2);
     }
 
-    public int calculateStatValue(int stat, int IV, int isHealth) {
-        return ((((stat + IV) * 2) * level)/100) + level * 10; 
+    public double calculateStatValue(double base, double IV, int isHealth) {
+        return ((((2 * base) + IV) * getLevel())/100.0) + getLevel() + 10;
     }
 
-    public int calculateStatValue(int stat, int IV) {
-        return ((((stat + IV) * 2) * level)/100) + 5; 
-    }
-
-    public void createPokemon(String name, Moves[] moves) {
-        this.name = name;
-        this.moves = moves;
-        this.level = 5;
+    public double calculateStatValue(double base, double IV) {
+        return ((((2 * base) + IV) * getLevel())/100.0) + 5;
     }
 
     public Moves getPokemonMove(int arrayPosition) {
         return this.moves[arrayPosition];
-    }
-
-    public Pokemon getSquirtle() {
-        Moves[] movesArray = new Moves[4];
-        movesArray[0] = new Moves().getNormalMove(1);
-        movesArray[1] = new Moves().getNormalMove(2);
-        movesArray[2] = new Moves().getWaterMove(1);
-        movesArray[3] = new Moves().getWaterMove(2);
-        this.createPokemon("Squirtle", movesArray);
-        this.setNumber(7);
-        return this;
     }
 
     // Nome
@@ -91,8 +74,6 @@ public final class Pokemon implements Serializable {
         this.number = number;
     }
 
-    
-    
     // Nível
     public int getLevel() {
         return level;
@@ -103,57 +84,57 @@ public final class Pokemon implements Serializable {
     }
 
     // Health
-    public int getHealthValue() {
+    public double getHealthValue() {
         return this.health[0];
     }
 
-    public void setHealthValue(int health) {
+    public void setHealthValue(double health) {
         this.health[0] = health;
     }
 
-    public int getHealthIV() {
+    public double getHealthIV() {
         return this.health[2];
     }
 
-    private void setHealthIV(int healthIV) {
+    private void setHealthIV(double healthIV) {
         this.health[2] = healthIV;
     }
 
-    public int getHealthStat() {
+    public double getHealthStat() {
         return this.health[2];
     }
 
-    public void setHealthStat(int healthStat) {
-        this.health[3] = healthStat;
+    public void setHealthStat(double healthStat) {
+        this.health[2] = healthStat;
     }
 
     // Speed
-    public int getSpeedValue() {
+    public double getSpeedValue() {
         return this.speed[0];
     }
 
-    public void setSpeedValue(int speed) {
+    public void setSpeedValue(double speed) {
         this.speed[0] = speed;
     }
 
-    public int getSpeedIV() {
+    public double getSpeedIV() {
         return this.speed[2];
     }
 
-    private void setSpeedIV(int speedIV) {
+    private void setSpeedIV(double speedIV) {
         this.speed[2] = speedIV;
     }
 
-    public int getSpeedStat() {
+    public double getSpeedStat() {
         return this.speed[2];
     }
 
-    public void setSpeedStat(int speedStat) {
-        this.speed[3] = speedStat;
+    public void setSpeedStat(double speedStat) {
+        this.speed[2] = speedStat;
     }
 
     // Defense
-    public int getDefenseValue(int type) {
+    public double getDefenseValue(int type) {
         if (type == 1) { //Fisico
             return this.physicalDefense[0];
         } else {
@@ -161,7 +142,7 @@ public final class Pokemon implements Serializable {
         }
     }
 
-    public void setDefenseValue(int defense, int type) {
+    public void setDefenseValue(double defense, int type) {
         if (type == 1) { //Fisico
             this.physicalDefense[0] = defense;
         } else {
@@ -169,7 +150,7 @@ public final class Pokemon implements Serializable {
         }
     }
 
-    public int getDefenseStat(int type) {
+    public double getDefenseStat(int type) {
         if (type == 1) { // Fisico
             return this.physicalDefense[2];
         } else { // Fisico
@@ -177,34 +158,34 @@ public final class Pokemon implements Serializable {
         }
     }
 
-    public void setDefenseStat(int defense, int type) {
+    public void setDefenseStat(double defense, int type) {
         if (type == 1) { // Fisico
-            this.physicalDefense[3] = defense;
+            this.physicalDefense[2] = defense;
         } else {
-            this.specialDefense[3] = defense;
+            this.specialDefense[2] = defense;
         }
     }
 
     // PhysicalDefense
-    public int getPhysicalDefenseIV() {
+    public double getPhysicalDefenseIV() {
         return this.physicalDefense[2];
     }
 
-    private void setPhysicalDefenseIV(int physicalDefenseIV) {
+    private void setPhysicalDefenseIV(double physicalDefenseIV) {
         this.physicalDefense[2] = physicalDefenseIV;
     }
 
     // SpecialDefense
-    public int getSpecialDefenseIV() {
+    public double getSpecialDefenseIV() {
         return this.specialDefense[2];
     }
 
-    private void setSpecialDefenseIV(int specialDefenseIV) {
+    private void setSpecialDefenseIV(double specialDefenseIV) {
         this.specialDefense[2] = specialDefenseIV;
     }
 
     // Attack
-    public int getAttackValue(int type) {
+    public double getAttackValue(int type) {
         if (type == 1) { //Fisico
             return this.physicalAttack[0];
         } else {
@@ -212,7 +193,7 @@ public final class Pokemon implements Serializable {
         }
     }
 
-    public void setAttackValue(int attack, int type) {
+    public void setAttackValue(double attack, int type) {
         if (type == 1) { //Fisico
             this.physicalAttack[0] = attack;
         } else {
@@ -220,7 +201,7 @@ public final class Pokemon implements Serializable {
         }
     }
 
-    public int getAttackStat(int type) {
+    public double getAttackStat(int type) {
         if (type == 1) { // Fisico
             return this.physicalAttack[2];
         } else { // Fisico
@@ -228,29 +209,63 @@ public final class Pokemon implements Serializable {
         }
     }
 
-    public void setAttackStat(int attack, int type) {
+    public void setAttackStat(double attack, int type) {
         if (type == 1) { // Fisico
-            this.physicalAttack[3] = attack;
+            this.physicalAttack[2] = attack;
         } else {
-            this.specialAttack[3] = attack;
+            this.specialAttack[2] = attack;
         }
     }
 
     // PhysicalAttack
-    public int getPhysicalAttackIV() {
+    public double getPhysicalAttackIV() {
         return this.physicalAttack[2];
     }
 
-    private void setPhysicalAttackIV(int physicalAttackIV) {
+    private void setPhysicalAttackIV(double physicalAttackIV) {
         this.physicalAttack[2] = physicalAttackIV;
     }
 
     // SpecialAttack
-    public int getSpecialAttackIV() {
+    public double getSpecialAttackIV() {
         return this.specialAttack[2];
     }
 
-    private void setSpecialAttackIV(int specialAttackIV) {
+    private void setSpecialAttackIV(double specialAttackIV) {
         this.specialAttack[2] = specialAttackIV;
     }
+
+    public Moves[] getMoves() {
+        return moves;
+    }
+
+    public void setMoves(Moves[] moves) {
+        this.moves = moves;
+    }
+
+    public double getMaxHealthValue() {
+        return maxhealth;
+    }
+
+    public void setMaxHealthValue(double maxhealth) {
+        this.maxhealth = maxhealth;
+    }
+
+    public int getPrimaryType() {
+        return primaryType;
+    }
+
+    public void setPrimaryType(int primaryType) {
+        this.primaryType = primaryType;
+    }
+
+    public int getSecondaryType() {
+        return secondaryType;
+    }
+
+    public void setSecondaryType(int secondaryType) {
+        this.secondaryType = secondaryType;
+    }
+
+    
 }

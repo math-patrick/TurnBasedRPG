@@ -33,14 +33,14 @@ public class Server {
     private Pokemon p1Pokemon;
     private int p2ButtonNum;
     private Pokemon p2Pokemon;
-    
+
     private Combat combat;
 
     public Server() {
         System.out.println("Servidor online!");
         numPlayers = 0;
         values = new int[4];
-        
+
         combat = new Combat();
 
         for (int i = 0; i < values.length; i++) {
@@ -77,6 +77,7 @@ public class Server {
     }
 
     private class ServerSideConnection implements Runnable {
+
         private Socket socket;
         private ObjectInputStream dataIn;
         private ObjectOutputStream dataOut;
@@ -99,7 +100,7 @@ public class Server {
             try {
                 dataOut.writeInt(playerID);
                 dataOut.flush();
-                
+
                 if (playerID == 1) {
                     setP1Pokemon((Pokemon) dataIn.readObject());
                     combat.setPlayer1(getP1Pokemon());
@@ -107,33 +108,30 @@ public class Server {
                     setP2Pokemon((Pokemon) dataIn.readObject());
                     combat.setPlayer2(getP2Pokemon());
                 }
-                
+
                 p1ButtonNum = -1;
                 p2ButtonNum = -1;
                 while (true) {
-                    if (getP1Pokemon()!=null && getP2Pokemon()!=null && combat.isReady()) {
+                    if (getP1Pokemon() != null && getP2Pokemon() != null && combat.isReady()) {
                         if (playerID == 1) {
                             p1ButtonNum = dataIn.readInt();
-                            int damage = combat.calculateDamage(p1ButtonNum, playerID);
-                            String moveName = getP1Pokemon().getPokemonMove(p1ButtonNum).getName();
-                            System.out.println("Player "+playerID+" used " + moveName + " and dealt "+ damage +" damage");
-                           
+                            combat.calculateDamage(p1ButtonNum, playerID);
+
                             setP1Pokemon(combat.getPlayer1());
                             setP2Pokemon(combat.getPlayer2());
-                            
-                            player2.sendPokemon(getP2Pokemon());
-                            player2.sendPokemon(getP1Pokemon());
+
+                            player1.sendCombat(combat);
+                            player2.sendCombat(combat);
                         } else {
                             p2ButtonNum = dataIn.readInt();
-                            int damage = combat.calculateDamage(p2ButtonNum, playerID);
-                            String moveName = getP2Pokemon().getPokemonMove(p2ButtonNum).getName();
-                            System.out.println("Player "+playerID+" used " + moveName + " and dealt "+ damage +" damage");
-                            
+
+                            combat.calculateDamage(p2ButtonNum, playerID);
+
                             setP1Pokemon(combat.getPlayer1());
                             setP2Pokemon(combat.getPlayer2());
-                            
-                            player1.sendPokemon(getP1Pokemon());
-                            player1.sendPokemon(getP2Pokemon());
+
+                            player1.sendCombat(combat);
+                            player2.sendCombat(combat);
                         }
                     }
                 }
@@ -141,12 +139,20 @@ public class Server {
                 System.out.println(ex);
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-            } 
+            }
         }
 
         public void sendPokemon(Pokemon n) {
             try {
-                System.out.println("Sent wit health "+n.getHealthValue());
+                dataOut.writeObject(n);
+                dataOut.reset();
+            } catch (IOException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        public void sendCombat(Combat n) {
+            try {
                 dataOut.writeObject(n);
                 dataOut.reset();
             } catch (IOException ex) {
@@ -175,6 +181,5 @@ public class Server {
     public void setP2Pokemon(Pokemon p2Pokemon) {
         this.p2Pokemon = p2Pokemon;
     }
-    
-    
+
 }
