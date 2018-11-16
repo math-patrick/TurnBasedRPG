@@ -14,10 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -25,7 +23,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 import turnbasedrpg.moves.Combat;
 import turnbasedrpg.moves.Pokemon;
@@ -35,7 +32,7 @@ import turnbasedrpg.moves.PokemonList;
  *
  * @author matheus.oliveira
  */
-public class Player extends JFrame {
+public final class Player extends JFrame {
 
     private final Container contentPane;
     private final JTextArea combatInfo;
@@ -64,9 +61,6 @@ public class Player extends JFrame {
     private final JPanel sprites;
     private final JPanel buttons;
     private final JPanel buttonsDesc;
-
-    private int playerID;
-    private int otherPlayerID;
 
     private boolean buttonsEnabled;
 
@@ -168,7 +162,7 @@ public class Player extends JFrame {
         enemyImage.setMinimumSize(new Dimension(80, 80));
 
         connectToServer();
-        if (clientSideConnection.isAlive) {
+        if (clientSideConnection.isAlive()) {
             setUpGUI();
             setUpButtons();
         } else {
@@ -226,14 +220,13 @@ public class Player extends JFrame {
         contentPane.add(combatLog);
         contentPane.add(combatInfo);
 
-        combatLog.setText("Conectado como jogador #" + playerID);
-        if (playerID == 1) {
+        combatLog.setText("Conectado como jogador #" + clientSideConnection.getPlayerID());
+        if (clientSideConnection.getPlayerID() == 1) {
             buttonsEnabled = true;
-            otherPlayerID = 2;
         } else {
             buttonsEnabled = false;
-            otherPlayerID = 1;
             Thread t = new Thread(new Runnable() {
+                @Override
                 public void run() {
                     try {
                         updateTurn();
@@ -289,7 +282,7 @@ public class Player extends JFrame {
     }
 
     public void setUpButtons() {
-        ActionListener actionListener;;
+        ActionListener actionListener;
 
         actionListener = new ActionListener() {
             @Override
@@ -304,6 +297,7 @@ public class Player extends JFrame {
                 clientSideConnection.sendButtonNum(Integer.parseInt(button.getName()));
 
                 Thread t = new Thread(new Runnable() {
+                    @Override
                     public void run() {
                         try {
                             updateTurn();
@@ -332,8 +326,8 @@ public class Player extends JFrame {
 
     public void updateTurn() throws ClassNotFoundException, IOException, URISyntaxException {
         Combat combat = clientSideConnection.receiveCombat();
-        setPlayerPokemon((this.playerID == 1) ? combat.getPlayer1() : combat.getPlayer2());
-        setEnemyPokemon((this.playerID == 1) ? combat.getPlayer2() : combat.getPlayer1());
+        setPlayerPokemon((this.clientSideConnection.getPlayerID() == 1) ? combat.getPlayer1() : combat.getPlayer2());
+        setEnemyPokemon((this.clientSideConnection.getPlayerID() == 1) ? combat.getPlayer2() : combat.getPlayer1());
 
         // Atualiza a imagem do oponente
         URI img = getClass().getResource("/turnbasedrpg/pokemon/" + getEnemyPokemon().getNumber() + ".png").toURI();
@@ -345,7 +339,7 @@ public class Player extends JFrame {
                 + "\nOponente: [" + getEnemyPokemon().getHealthValue()
                 + "/" + getEnemyPokemon().getMaxHealthValue() + "]");
 
-        if (combat.getLastPlayer() == getPlayerID()) {
+        if (combat.getLastPlayer() == clientSideConnection.getPlayerID()) {
             combatLog.setText("Seu " + getPlayerPokemon().getName()
                     + " utilizou " + combat.getMoveUsed()
                     + " e realizou " + combat.getDamage() + " de dano!");
@@ -382,71 +376,6 @@ public class Player extends JFrame {
         return (clientSideConnection != null);
     }
 
-    // Client Connection Inner Class
-    private class ClientSideConnection {
-
-        private boolean isAlive = false;
-        private Socket socket;
-        private ObjectInputStream dataIn;
-        private ObjectOutputStream dataOut;
-
-        public ClientSideConnection(Pokemon pokemon) {
-            System.out.println("Cliente conectando");
-            try {
-                socket = new Socket("localhost", 51734); // Inicia o pedido de conexão ao servidor
-                dataOut = new ObjectOutputStream(socket.getOutputStream());
-                dataOut.flush();
-                dataIn = new ObjectInputStream(socket.getInputStream());
-                playerID = dataIn.readInt();
-                System.out.println("Connected as #" + playerID);
-                sendPokemon(pokemon);
-                isAlive = true;
-            } catch (IOException ex) {
-                System.out.println(ex);
-            }
-        }
-
-        public void sendButtonNum(int n) {
-            try {
-                dataOut.writeInt(n);
-                dataOut.flush();
-            } catch (IOException ex) {
-                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        public void sendPokemon(Pokemon n) {
-            try {
-                dataOut.writeObject(n);
-                dataOut.flush();
-            } catch (IOException ex) {
-                System.out.println("Erro ao enviar o " + n.getName());
-                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        public Pokemon receivePokemon() throws ClassNotFoundException {
-            Pokemon received = null;
-            try {
-                received = (Pokemon) dataIn.readObject();
-            } catch (IOException ex) {
-                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            return received;
-        }
-
-        public Combat receiveCombat() throws ClassNotFoundException {
-            Combat received = null;
-            try {
-                received = (Combat) dataIn.readObject();
-            } catch (IOException ex) {
-                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            return received;
-        }
-
-    }
-
     public static void main(String[] args) throws IOException, URISyntaxException {
         Player p = new Player(500, 100);
         p.setUpInitialGUI();
@@ -466,22 +395,6 @@ public class Player extends JFrame {
 
     public void setEnemyPokemon(Pokemon enemyPokemon) {
         this.enemyPokemon = enemyPokemon;
-    }
-
-    public int getPlayerID() {
-        return playerID;
-    }
-
-    public void setPlayerID(int playerID) {
-        this.playerID = playerID;
-    }
-
-    public int getOtherPlayerID() {
-        return otherPlayerID;
-    }
-
-    public void setOtherPlayerID(int otherPlayerID) {
-        this.otherPlayerID = otherPlayerID;
     }
 
 }

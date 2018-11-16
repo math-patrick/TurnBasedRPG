@@ -5,8 +5,6 @@
  */
 package turnbasedrpg;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -27,11 +25,10 @@ public class Server {
     private int numPlayers;
     private ServerSideConnection player1;
     private ServerSideConnection player2;
-    private int[] values;
 
     private int p1ButtonNum;
-    private Pokemon p1Pokemon;
     private int p2ButtonNum;
+    private Pokemon p1Pokemon;
     private Pokemon p2Pokemon;
 
     private Combat combat;
@@ -39,13 +36,8 @@ public class Server {
     public Server() {
         System.out.println("Servidor online!");
         numPlayers = 0;
-        values = new int[4];
 
         combat = new Combat();
-
-        for (int i = 0; i < values.length; i++) {
-            values[i] = (int) Math.ceil(Math.random() * 100) + 1;
-        }
 
         try {
             serverSocket = new ServerSocket(51734);
