@@ -14,6 +14,7 @@ public class Pokemon implements Serializable {
     int level = 1;
     int primaryType = 0;
     int secondaryType = 0;
+    int OT = 0;
 
     double[] physicalAttack = new double[3];
     double[] specialAttack = new double[3];
@@ -265,6 +266,14 @@ public class Pokemon implements Serializable {
 
     public void setSecondaryType(int secondaryType) {
         this.secondaryType = secondaryType;
+    }
+
+    public int getOT() {
+        return OT;
+    }
+
+    public void setOT(int OT) {
+        this.OT = OT;
     }
 
     

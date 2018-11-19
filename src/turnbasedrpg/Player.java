@@ -221,23 +221,7 @@ public final class Player extends JFrame {
         contentPane.add(combatInfo);
 
         combatLog.setText("Conectado como jogador #" + clientSideConnection.getPlayerID());
-        if (clientSideConnection.getPlayerID() == 1) {
-            buttonsEnabled = true;
-        } else {
-            buttonsEnabled = false;
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        updateTurn();
-                    } catch (ClassNotFoundException | IOException | URISyntaxException ex) {
-                        Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            });
-            t.start();
-        }
-
+        buttonsEnabled = true;
         toggleButtons();
 
         this.setVisible(true);
@@ -339,34 +323,22 @@ public final class Player extends JFrame {
                 + "\nOponente: [" + getEnemyPokemon().getHealthValue()
                 + "/" + getEnemyPokemon().getMaxHealthValue() + "]");
 
-        if (combat.getLastPlayer() == clientSideConnection.getPlayerID()) {
-            combatLog.setText("Seu " + getPlayerPokemon().getName()
-                    + " utilizou " + combat.getMoveUsed()
-                    + " e realizou " + combat.getDamage() + " de dano!");
-
-            if (combat.getIsCrit()) {
-                combatLog.setText(combatLog.getText() + " Golpe critico!");
-            }
-
-            if (getEnemyPokemon().getHealthValue() == 0) {
+        combatLog.setText(combat.getFirstMessage());
+        if (combat.getSecondMessage()!=null) {
+            combatLog.setText(combatLog.getText() + "\n" + combat.getFirstMessage());
+        }
+        if (combat.getWinnerID()!=0) {
+            if (combat.getWinnerID() == clientSideConnection.getPlayerID()) {
                 combatLog.setText(combatLog.getText()
                         + "\nVocê derrotou " + getEnemyPokemon().getName() + "!");
             } else {
-                updateTurn();
-            }
-        } else {
-            combatLog.setText("O " + getEnemyPokemon().getName() + " "
-                    + "inimigo utilizou " + combat.getMoveUsed() + " "
-                    + "e realizou " + combat.getDamage() + " de dano!");
-
-            if (getPlayerPokemon().getHealthValue() == 0) {
                 combatLog.setText(combatLog.getText()
                         + "\nVocê foi derrotado por " + getEnemyPokemon().getName() + "!");
-            } else {
-                // Habilita botões
-                buttonsEnabled = true;
-                toggleButtons();
             }
+        } else {
+            // Habilita botões
+            buttonsEnabled = true;
+            toggleButtons();
         }
     }
 
