@@ -16,6 +16,8 @@ public class PokemonList extends Pokemon {
                 return getCharizard();
             case "9":
                 return getBlastoise();
+            case "282":
+                return getGardevoir();
             default:
                 return getSquirtle();
         }
@@ -86,5 +88,30 @@ public class PokemonList extends Pokemon {
         
         Blastoise.calculateStats();
         return Blastoise;
+    }
+    
+    public Pokemon getGardevoir() {
+        Moves[] movesArray = new Moves[4];
+        movesArray[0] = new MoveList().getFairyMove(1);
+        movesArray[1] = new MoveList().getFairyMove(2);
+        movesArray[2] = new MoveList().getPsychicMove(1);
+        movesArray[3] = new MoveList().getPsychicMove(2);
+     
+        Pokemon Pokemon = new Pokemon();
+        Pokemon.setNumber(282);
+        Pokemon.setName("Gardevoir");
+        Pokemon.setMoves(movesArray);
+        Pokemon.setLevel(50);
+        Pokemon.setPrimaryType(6);
+        
+        Pokemon.setHealthStat(68);
+        Pokemon.setAttackStat(65, 1);
+        Pokemon.setDefenseStat(65, 1);
+        Pokemon.setAttackStat(125, 2);
+        Pokemon.setDefenseStat(115, 2);
+        Pokemon.setSpeedStat(80);
+        
+        Pokemon.calculateStats();
+        return Pokemon;
     }
 }

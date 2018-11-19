@@ -149,4 +149,50 @@ public class MoveList extends Moves {
         }
         return steelMove;
     }
+    
+    public Moves getFairyMove(int id) {
+        Moves Move = new Moves();
+        Move.setType(7);
+        switch (id) {
+            case 1:
+                // Moonblast
+                Move.setName("Explosão Lunar");
+                Move.setPP(15);
+                Move.setPower(95);
+                Move.setCategory(2);
+                break;
+            case 2:
+                // Draining Kiss
+                Move.setName("Beijo Drenante");
+                Move.setPP(10);
+                Move.setPower(50);
+                Move.setCategory(2);
+                break;
+        }
+        return Move;
+    }
+    
+    public Moves getPsychicMove(int id) {
+        Moves Move = new Moves();
+        Move.setType(8);
+        switch (id) {
+            case 1:
+                // Calm Mind
+                Move.setName("Mente Calma");
+                Move.setPP(20);
+                Move.setPower(0);
+                Move.setCategory(3);
+                Move.setStatChange(2);
+                Move.setStatChangeType(3);
+                break;
+            case 2:
+                // Psychic 
+                Move.setName("Psiquico");
+                Move.setPP(10);
+                Move.setPower(90);
+                Move.setCategory(2);
+                break;
+        }
+        return Move;
+    }
 }

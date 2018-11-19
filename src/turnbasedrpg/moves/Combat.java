@@ -59,11 +59,15 @@ public class Combat implements Serializable {
             setFirstPlayerID(2);
         }
 
-        damageCalculation.calculateDamage(attacker, defender, attackerMove);
-        setFirstMessage(damageCalculation.getMessage());
-        double dmgFirst = damageCalculation.getDamage();
-        double healthDefender = defender.getHealthValue() - dmgFirst;
+        double healthDefender = defender.getHealthValue();
         double healthAttacker = attacker.getHealthValue();
+        
+        if (attackerMove.getCategory() != 3) {
+            damageCalculation.calculateDamage(attacker, defender, attackerMove);
+            setFirstMessage(damageCalculation.getMessage());
+            double dmgFirst = damageCalculation.getDamage();
+            healthDefender -= dmgFirst;
+        }
 
         if (healthDefender < 0) {
             healthDefender = 0;
@@ -73,7 +77,7 @@ public class Combat implements Serializable {
             damageCalculation.calculateDamage(defender, attacker, defenderMove);
             setSecondMessage(damageCalculation.getMessage());
             double dmgSecond = damageCalculation.getDamage();
-            healthAttacker = healthAttacker - dmgSecond;
+            healthAttacker -= dmgSecond;
 
             if (healthAttacker < 0) {
                 setWinnerID(defender.getOT());

@@ -69,7 +69,6 @@ public class Server {
     }
 
     private class ServerSideConnection implements Runnable {
-
         private Socket socket;
         private ObjectInputStream dataIn;
         private ObjectOutputStream dataOut;

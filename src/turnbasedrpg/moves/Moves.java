@@ -35,7 +35,7 @@ public class Moves implements Serializable {
     public int pp = 20;
     // Accuracy
     public int accuracy = 100;
-    // type (1. Normal, 2. Water, 3. Fire, 4. Grass, 5. Flying)
+    // type
     public int type = 1;
     // Category (1. Physical, 2. Special, 3. Status)
     public int category = 1;
@@ -63,7 +63,31 @@ public class Moves implements Serializable {
             case 5: // Flying
                 return "Voador";
             case 6: // Steel
-                return "Aço";
+                return "Metálico";
+            case 7: // Fairy
+                return "Fada";
+            case 8: // Psychic
+                return "Psiquico";
+            case 9: // Ghost
+                return "Fantasma";
+            case 10: // Dark
+                return "Noturno";
+            case 11: // Bug
+                return "Inseto";
+            case 12: // Fighting
+                return "Lutador";
+            case 13: // Electric
+                return "Elétrico";
+            case 14: // Ice
+                return "Gelo";
+            case 15: // Rock
+                return "Pedra";
+            case 16: // Ground
+                return "Terra";
+            case 17: // Poison
+                return "Venenoso";
+            case 18: // Dragon
+                return "Dragão";
             default:
                 return "Normal";
         }
@@ -82,6 +106,30 @@ public class Moves implements Serializable {
                 return Color.decode("#A98FF3");
             case 6: // Steel
                 return Color.decode("#B7B7CE");
+            case 7: // Fairy
+                return Color.decode("#D685AD");
+            case 8: // Psychic
+                return Color.decode("#F95587");
+            case 9: // Ghost
+                return Color.decode("#735797");
+            case 10: // Dark
+                return Color.decode("#B7B7CE");
+            case 11: // Bug
+                return Color.decode("#A6B91A");
+            case 12: // Fighting
+                return Color.decode("#C22E28");
+            case 13: // Electric
+                return Color.decode("#F7D02C");
+            case 14: // Ice
+                return Color.decode("#96D9D6");
+            case 15: // Rock
+                return Color.decode("#B6A136");
+            case 16: // Ground
+                return Color.decode("#E2BF65");
+            case 17: // Poison
+                return Color.decode("#A33EA1");
+            case 18: // Dragon
+                return Color.decode("#6F35FC");
             default:
                 return Color.decode("#A8A77A");
         }

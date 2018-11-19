@@ -24,6 +24,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import turnbasedrpg.moves.Combat;
 import turnbasedrpg.moves.Pokemon;
 import turnbasedrpg.moves.PokemonList;
@@ -79,20 +81,20 @@ public final class Player extends JFrame {
     }
 
     public void configureButtonsPokemonPicker() throws IOException, URISyntaxException {
-        // Imagem do jogador
+        // Charizard
         URI img3 = getClass().getResource("/turnbasedrpg/pokemon/6.png").toURI();
         BufferedImage myPicture3 = ImageIO.read(new File((img3)));
         p1 = new JButton(new ImageIcon(myPicture3));
         p1.setMinimumSize(new Dimension(80, 80));
 
-        // Imagem do jogador
+        // Blastoise
         URI img4 = getClass().getResource("/turnbasedrpg/pokemon/9.png").toURI();
         BufferedImage myPicture4 = ImageIO.read(new File((img4)));
         p2 = new JButton(new ImageIcon(myPicture4));
         p2.setMinimumSize(new Dimension(80, 80));
 
-        // Imagem do jogador
-        URI img5 = getClass().getResource("/turnbasedrpg/pokemon/1.png").toURI();
+        // Gardevoir
+        URI img5 = getClass().getResource("/turnbasedrpg/pokemon/282.png").toURI();
         BufferedImage myPicture5 = ImageIO.read(new File((img5)));
         p3 = new JButton(new ImageIcon(myPicture5));
         p3.setMinimumSize(new Dimension(80, 80));
@@ -100,7 +102,7 @@ public final class Player extends JFrame {
         // ID dos pokémon
         p1.setName("6");
         p2.setName("9");
-        p3.setName("10");
+        p3.setName("282");
 
         setUpPokemonChooserButtons();
     }
@@ -234,7 +236,7 @@ public final class Player extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        contentPane.setLayout(new GridLayout(2, 2));
+        contentPane.setLayout(new GridLayout(2, 2));;
 
         contentPane.add(p1);
         contentPane.add(p2);
@@ -348,7 +350,11 @@ public final class Player extends JFrame {
         return (clientSideConnection != null);
     }
 
-    public static void main(String[] args) throws IOException, URISyntaxException {
+    public static void main(String[] args) throws IOException, URISyntaxException, UnsupportedLookAndFeelException {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        }
         Player p = new Player(500, 100);
         p.setUpInitialGUI();
     }
