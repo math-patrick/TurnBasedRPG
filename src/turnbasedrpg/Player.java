@@ -113,43 +113,16 @@ public final class Player extends JFrame {
         b2 = new JButton(this.playerPokemon.getPokemonMove(1).getName());
         b3 = new JButton(this.playerPokemon.getPokemonMove(2).getName());
         b4 = new JButton(this.playerPokemon.getPokemonMove(3).getName());
-        b1desc = new JLabel(setUpButton(0), SwingConstants.LEFT);
-        b2desc = new JLabel(setUpButton(1), SwingConstants.LEFT);
-        b3desc = new JLabel(setUpButton(2), SwingConstants.LEFT);
-        b4desc = new JLabel(setUpButton(3), SwingConstants.LEFT);
-        b1desc.setVerticalAlignment(SwingConstants.TOP);
-        b2desc.setVerticalAlignment(SwingConstants.TOP);
-        b3desc.setVerticalAlignment(SwingConstants.TOP);
-        b4desc.setVerticalAlignment(SwingConstants.TOP);
+        b1.setToolTipText(setUpButton(0));
+        b2.setToolTipText(setUpButton(1));
+        b3.setToolTipText(setUpButton(2));
+        b4.setToolTipText(setUpButton(3));
 
         // ID dos botões
         b1.setName("0");
         b2.setName("1");
         b3.setName("2");
         b4.setName("3");
-
-        // Cor dos botões
-        b1.setBackground(this.playerPokemon.getPokemonMove(0).getColor());
-        b2.setBackground(this.playerPokemon.getPokemonMove(1).getColor());
-        b3.setBackground(this.playerPokemon.getPokemonMove(2).getColor());
-        b4.setBackground(this.playerPokemon.getPokemonMove(3).getColor());
-        b1.setForeground(Color.WHITE);
-        b2.setForeground(Color.WHITE);
-        b3.setForeground(Color.WHITE);
-        b4.setForeground(Color.WHITE);
-
-        b1desc.setBackground(this.playerPokemon.getPokemonMove(0).getColor());
-        b2desc.setBackground(this.playerPokemon.getPokemonMove(1).getColor());
-        b3desc.setBackground(this.playerPokemon.getPokemonMove(2).getColor());
-        b4desc.setBackground(this.playerPokemon.getPokemonMove(3).getColor());
-        b1desc.setForeground(Color.WHITE);
-        b2desc.setForeground(Color.WHITE);
-        b3desc.setForeground(Color.WHITE);
-        b4desc.setForeground(Color.WHITE);
-        b1desc.setOpaque(true);
-        b2desc.setOpaque(true);
-        b3desc.setOpaque(true);
-        b4desc.setOpaque(true);
 
         // Imagem do jogador
         URI img = getClass().getResource("/turnbasedrpg/pokemon/back/" + playerPokemon.getNumber() + ".png").toURI();
@@ -204,20 +177,12 @@ public final class Player extends JFrame {
         combatInfo.setEditable(false);
 
         // Adiciona os botões na tela
-        buttons.setLayout(new GridLayout(1, 4));
+        buttons.setLayout(new GridLayout(2, 2));
         buttons.add(b1);
         buttons.add(b2);
         buttons.add(b3);
         buttons.add(b4);
         contentPane.add(buttons);
-
-        // Descrição dos botões
-        buttonsDesc.setLayout(new GridLayout(1, 4));
-        buttonsDesc.add(b1desc);
-        buttonsDesc.add(b2desc);
-        buttonsDesc.add(b3desc);
-        buttonsDesc.add(b4desc);
-        contentPane.add(buttonsDesc);
 
         contentPane.add(combatLog);
         contentPane.add(combatInfo);
@@ -274,25 +239,28 @@ public final class Player extends JFrame {
             @Override
             public void actionPerformed(ActionEvent event) {
                 JButton button = (JButton) event.getSource();
+                
+                if (button.isEnabled()) {
 
-                // Desabilita os botões
-                buttonsEnabled = false;
-                toggleButtons();
+                    // Desabilita os botões
+                    buttonsEnabled = false;
+                    toggleButtons();
 
-                // Envia qual ataque foi utilizado para o servidor
-                clientSideConnection.sendButtonNum(Integer.parseInt(button.getName()));
+                    // Envia qual ataque foi utilizado para o servidor
+                    clientSideConnection.sendButtonNum(Integer.parseInt(button.getName()));
 
-                Thread t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            updateTurn();
-                        } catch (ClassNotFoundException | IOException | URISyntaxException ex) {
-                            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                    Thread t = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                updateTurn();
+                            } catch (ClassNotFoundException | IOException | URISyntaxException ex) {
+                                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
-                    }
-                });
-                t.start();
+                    });
+                    t.start();
+                }
             }
         };
 
@@ -320,16 +288,17 @@ public final class Player extends JFrame {
         BufferedImage enemyImageLocal = ImageIO.read(new File((img)));
         this.enemyImage.setIcon(new ImageIcon(enemyImageLocal));
 
+        combatLog.setText(combat.getFirstMessage());
+        if (combat.getSecondMessage() != null) {
+            combatLog.setText(combatLog.getText() + "\n" + combat.getSecondMessage());
+        }
+
         combatInfo.setText("Você: [" + Math.round(getPlayerPokemon().getHealthValue())
                 + "/" + Math.round(getPlayerPokemon().getMaxHealthValue()) + "]"
                 + "\nOponente: [" + Math.round(getEnemyPokemon().getHealthValue())
                 + "/" + Math.round(getEnemyPokemon().getMaxHealthValue()) + "]");
 
-        combatLog.setText(combat.getFirstMessage());
-        if (combat.getSecondMessage()!=null) {
-            combatLog.setText(combatLog.getText() + "\n" + combat.getSecondMessage());
-        }
-        if (combat.getWinnerID()!=0) {
+        if (combat.getWinnerID() != 0) {
             if (combat.getWinnerID() == clientSideConnection.getPlayerID()) {
                 combatLog.setText(combatLog.getText()
                         + "\nVocê derrotou " + getEnemyPokemon().getName() + "!");
@@ -353,8 +322,7 @@ public final class Player extends JFrame {
     public static void main(String[] args) throws IOException, URISyntaxException, UnsupportedLookAndFeelException {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-        }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {}
         Player p = new Player(500, 100);
         p.setUpInitialGUI();
     }

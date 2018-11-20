@@ -61,11 +61,11 @@ public class Combat implements Serializable {
         double healthDefender = defender.getHealthValue();
         double healthAttacker = attacker.getHealthValue();
         
-        if (attackerMove.getStatChange() == 1) {
+        if (attackerMove.getStatChange() == 2) {
             // Debuff no inimigo
             defender.statModifier(attackerMove.statChangePower, attackerMove.statChangeType);
             setFirstMessage(attacker.getName() + " utilizou " + attackerMove.getName() + ". "+ attackerMove.getStatChangeName() + " aumentou em " + attackerMove.statChangePower + " estágios!");
-        } else if (attackerMove.getStatChange() == 2) {
+        } else if (attackerMove.getStatChange() == 1) {
             // Buff nele mesmo
             attacker.statModifier(attackerMove.statChangePower, attackerMove.statChangeType);
             setFirstMessage(attacker.getName() + " utilizou " + attackerMove.getName() + ". "+ attackerMove.getStatChangeName() + " de " + defender.getName() + " diminuiu em " + attackerMove.statChangePower + " estágios!");
@@ -78,29 +78,30 @@ public class Combat implements Serializable {
             healthDefender -= dmgFirst;
         }
 
-        if (healthDefender < 0) {
+        if (healthDefender <= 0) {
             healthDefender = 0;
             setWinnerID(attacker.getOT());
             setSecondMessage(null);
         } else {
-            if (defenderMove.getStatChange() == 1) {
+            if (defenderMove.getStatChange() == 2) {
                 // Debuff no inimigo
                 attacker.statModifier(defenderMove.statChangePower, defenderMove.statChangeType);
                 setSecondMessage(defender.getName() + " utilizou " + defenderMove.getName() + ". "+ defenderMove.getStatChangeName() + " aumentou em " + defenderMove.statChangePower + " estágios!");
-            } else if (defenderMove.getStatChange() == 2) {
+            } else if (defenderMove.getStatChange() == 1) {
                 // Buff nele mesmo
                 defender.statModifier(defenderMove.statChangePower, defenderMove.statChangeType);
                 setSecondMessage(defender.getName() + " utilizou " + defenderMove.getName() + ". "+ defenderMove.getStatChangeName() + " de " + attacker.getName() + " diminuiu em " + defenderMove.statChangePower + " estágios!");
             }
 
             if (defenderMove.getCategory() != 3) {
-                damageCalculation.calculateDamage(defender, attacker, defenderMove);
-                setSecondMessage(damageCalculation.getMessage());
-                double dmgSecond = damageCalculation.getDamage();
+                DamageCalculation damageCalculation2 = new DamageCalculation();
+                damageCalculation2.calculateDamage(defender, attacker, defenderMove);
+                setSecondMessage(damageCalculation2.getMessage());
+                double dmgSecond = damageCalculation2.getDamage();
                 healthAttacker -= dmgSecond;
             }           
 
-            if (healthAttacker < 0) {
+            if (healthAttacker <= 0) {
                 setWinnerID(defender.getOT());
                 healthAttacker = 0;
             }

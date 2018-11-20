@@ -113,7 +113,7 @@ public class Server {
                         if (p1ButtonNum!=-1 && p2ButtonNum!=-1) {
                             combat.calculateDamage(p1ButtonNum, p2ButtonNum);
                             p1ButtonNum = -1;
-                            p2ButtonNum = -2;
+                            p2ButtonNum = -1;
 
                             setP1Pokemon(combat.getPlayer1());
                             setP2Pokemon(combat.getPlayer2());

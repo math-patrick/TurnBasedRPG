@@ -143,6 +143,7 @@ public class MoveList extends Moves {
             case 1:
                 // Iron Defense
                 steelMove.setName("Defesa de Ferro");
+                steelMove.setDesc("O usuário endurece a superfície de seu corpo como ferro, aumentando drasticamente seu status de defesa.");
                 steelMove.setPP(15);
                 steelMove.setPower(0);
                 steelMove.setCategory(3);
@@ -161,6 +162,7 @@ public class MoveList extends Moves {
             case 1:
                 // Moonblast
                 Move.setName("Explosão Lunar");
+                Move.setDesc("Tomando emprestado o poder da lua, o usuário ataca o alvo.");
                 Move.setPP(15);
                 Move.setPower(95);
                 Move.setCategory(2);
@@ -168,6 +170,7 @@ public class MoveList extends Moves {
             case 2:
                 // Draining Kiss
                 Move.setName("Beijo Drenante");
+                Move.setDesc("O usuário atinge o alvo com um beijo.");
                 Move.setPP(10);
                 Move.setPower(50);
                 Move.setCategory(2);
@@ -183,16 +186,18 @@ public class MoveList extends Moves {
             case 1:
                 // Calm Mind
                 Move.setName("Mente Calma");
+                Move.setDesc("O usuário silenciosamente concentra sua mente e acalma seu espírito para aumentar seu ataque especial.");
                 Move.setPP(20);
                 Move.setPower(0);
                 Move.setCategory(3);
                 Move.setStatChange(2);
-                Move.setStatChangeType(3);
+                Move.setStatChangeType(2);
                 Move.setStatChangePower(2);
                 break;
             case 2:
                 // Psychic 
                 Move.setName("Psiquico");
+                Move.setDesc("O alvo é atingido por uma forte força telecinética.");
                 Move.setPP(10);
                 Move.setPower(90);
                 Move.setCategory(2);
