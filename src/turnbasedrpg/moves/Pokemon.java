@@ -22,6 +22,19 @@ public class Pokemon implements Serializable {
     double[] specialDefense = new double[3];
     double[] speed = new double[3];
     double[] health = new double[3];
+    
+    double physicalAttackModifier;
+    double specialAttackModifier;
+    double physicalDefenseModifier;
+    double specialDefenseModifier;
+    double speedModifier;
+    
+    double physicalAttackTemp;
+    double specialAttackTemp;
+    double physicalDefenseTemp;
+    double specialDefenseTemp;
+    double speedTemp;
+     
     double maxhealth;
 
     public void calculateStats() {
@@ -58,6 +71,74 @@ public class Pokemon implements Serializable {
         return this.moves[arrayPosition];
     }
 
+    
+    public void statModifier(int stages, int type) {
+        // What stat does it change? (1 - Attack, 2 - Special Attack, 3 - Defense, 4 - Special Defense, 5 - Speed, 6 - Accuracy, 7 - Avoidance)
+        double stat = 0;
+        switch(type) {
+            // Attack
+            case 1: 
+                stat = getPhysicalAttackModifier();
+                break;
+            // SAttack
+            case 2: 
+                stat = getSpecialAttackModifier();
+                break;
+            // Defense
+            case 3: 
+                stat = getPhysicalDefenseModifier();
+                break;
+            // SDefense
+            case 4: 
+                stat = getSpecialDefenseModifier();
+                break;
+            // Speed
+            case 5: 
+                stat = getSpeedModifier();
+                break;
+        }
+        
+        double newStatModifier;
+        stat += stages;
+        
+        if (stat > 6) {
+            stat = 6;
+        } else if (stat < -6){
+            stat = -6;
+        }
+        
+        double multiplier;
+        
+        if (stat > 0) {
+            multiplier = stat * 0.5;
+            multiplier ++;
+        } else if (stat < 0) {
+            
+        }
+        
+        switch(type) {
+            // Attack
+            case 1: 
+                setPhysicalAttackModifier(stat);
+                break;
+            // SAttack
+            case 2: 
+                setSpecialAttackModifier(stat);
+                break;
+            // Defense
+            case 3: 
+                setPhysicalDefenseModifier(stat);
+                break;
+            // SDefense
+            case 4: 
+                setSpecialDefenseModifier(stat);
+                break;
+            // Speed
+            case 5: 
+                setSpeedModifier(stat);
+                break;
+        }
+    }
     // Nome
     public String getName() {
         return name;
@@ -274,6 +355,142 @@ public class Pokemon implements Serializable {
 
     public void setOT(int OT) {
         this.OT = OT;
+    }
+
+    public double getPhysicalAttackModifier() {
+        return physicalAttackModifier;
+    }
+
+    public void setPhysicalAttackModifier(double physicalAttackModifier) {
+        this.physicalAttackModifier = physicalAttackModifier;
+    }
+
+    public double getSpecialAttackModifier() {
+        return specialAttackModifier;
+    }
+
+    public void setSpecialAttackModifier(double specialAttackModifier) {
+        this.specialAttackModifier = specialAttackModifier;
+    }
+
+    public double getPhysicalDefenseModifier() {
+        return physicalDefenseModifier;
+    }
+
+    public void setPhysicalDefenseModifier(double physicalDefenseModifier) {
+        this.physicalDefenseModifier = physicalDefenseModifier;
+    }
+
+    public double getSpecialDefenseModifier() {
+        return specialDefenseModifier;
+    }
+
+    public void setSpecialDefenseModifier(double specialDefenseModifier) {
+        this.specialDefenseModifier = specialDefenseModifier;
+    }
+
+    public double getSpeedModifier() {
+        return speedModifier;
+    }
+
+    public void setSpeedModifier(double speedModifier) {
+        this.speedModifier = speedModifier;
+    }
+
+    public double getMaxhealth() {
+        return maxhealth;
+    }
+
+    public void setMaxhealth(double maxhealth) {
+        this.maxhealth = maxhealth;
+    }
+
+    public double[] getPhysicalAttack() {
+        return physicalAttack;
+    }
+
+    public void setPhysicalAttack(double[] physicalAttack) {
+        this.physicalAttack = physicalAttack;
+    }
+
+    public double[] getSpecialAttack() {
+        return specialAttack;
+    }
+
+    public void setSpecialAttack(double[] specialAttack) {
+        this.specialAttack = specialAttack;
+    }
+
+    public double[] getPhysicalDefense() {
+        return physicalDefense;
+    }
+
+    public void setPhysicalDefense(double[] physicalDefense) {
+        this.physicalDefense = physicalDefense;
+    }
+
+    public double[] getSpecialDefense() {
+        return specialDefense;
+    }
+
+    public void setSpecialDefense(double[] specialDefense) {
+        this.specialDefense = specialDefense;
+    }
+
+    public double[] getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double[] speed) {
+        this.speed = speed;
+    }
+
+    public double[] getHealth() {
+        return health;
+    }
+
+    public void setHealth(double[] health) {
+        this.health = health;
+    }
+
+    public double getPhysicalAttackTemp() {
+        return physicalAttackTemp;
+    }
+
+    public void setPhysicalAttackTemp(double physicalAttackTemp) {
+        this.physicalAttackTemp = physicalAttackTemp;
+    }
+
+    public double getSpecialAttackTemp() {
+        return specialAttackTemp;
+    }
+
+    public void setSpecialAttackTemp(double specialAttackTemp) {
+        this.specialAttackTemp = specialAttackTemp;
+    }
+
+    public double getPhysicalDefenseTemp() {
+        return physicalDefenseTemp;
+    }
+
+    public void setPhysicalDefenseTemp(double physicalDefenseTemp) {
+        this.physicalDefenseTemp = physicalDefenseTemp;
+    }
+
+    public double getSpecialDefenseTemp() {
+        return specialDefenseTemp;
+    }
+
+    public void setSpecialDefenseTemp(double specialDefenseTemp) {
+        this.specialDefenseTemp = specialDefenseTemp;
+    }
+
+    public double getSpeedTemp() {
+        return speedTemp;
+    }
+
+    public void setSpeedTemp(double speedTemp) {
+        this.speedTemp = speedTemp;
     }
 
     

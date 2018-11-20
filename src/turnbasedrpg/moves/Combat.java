@@ -6,7 +6,6 @@
 package turnbasedrpg.moves;
 
 import java.io.Serializable;
-import java.util.Random;
 
 /**
  *
@@ -61,6 +60,14 @@ public class Combat implements Serializable {
 
         double healthDefender = defender.getHealthValue();
         double healthAttacker = attacker.getHealthValue();
+        
+        if (attackerMove.getStatChange() == 1) {
+            // Debuff no inimigo
+            defender.statModifier(attackerMove.statChangePower, attackerMove.statChangeType);
+        } else if (attackerMove.getStatChange() == 2) {
+            // Buff nele mesmo
+            attacker.statModifier(attackerMove.statChangePower, attackerMove.statChangeType);
+        }
         
         if (attackerMove.getCategory() != 3) {
             damageCalculation.calculateDamage(attacker, defender, attackerMove);

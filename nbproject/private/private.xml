@@ -5,7 +5,9 @@
         <group>
             <file>file:/C:/Users/Zhaetar/Desktop/TurnBasedRPG/src/turnbasedrpg/Player.java</file>
             <file>file:/C:/Users/Zhaetar/Desktop/TurnBasedRPG/src/turnbasedrpg/moves/Combat.java</file>
+            <file>file:/C:/Users/Zhaetar/Desktop/TurnBasedRPG/src/turnbasedrpg/moves/Moves.java</file>
             <file>file:/C:/Users/Zhaetar/Desktop/TurnBasedRPG/src/turnbasedrpg/Server.java</file>
+            <file>file:/C:/Users/Zhaetar/Desktop/TurnBasedRPG/src/turnbasedrpg/moves/Pokemon.java</file>
             <file>file:/C:/Users/Zhaetar/Desktop/TurnBasedRPG/src/turnbasedrpg/moves/DamageCalculation.java</file>
         </group>
     </open-files>
