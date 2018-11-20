@@ -29,6 +29,7 @@ public class MoveList extends Moves {
                 move.setPower(0);
                 move.setCategory(3);
                 move.setStatChange(1);
+                move.setStatChangePower(1);
                 move.setStatChangeType(3);
                 break;
             case 3:
@@ -46,7 +47,8 @@ public class MoveList extends Moves {
                 move.setPP(10);
                 move.setPower(0);
                 move.setCategory(3);
-                move.setStatChange(2);
+                move.setStatChange(1);
+                move.setStatChangePower(2);
                 move.setStatChangeType(5);
                 break;
             case 5:
@@ -80,6 +82,7 @@ public class MoveList extends Moves {
                 waterMove.setCategory(3);
                 waterMove.setStatChange(2);
                 waterMove.setStatChangeType(3);
+                waterMove.setStatChangePower(2);
                 break;
             case 3:
                 // Water Pulse
@@ -144,6 +147,7 @@ public class MoveList extends Moves {
                 steelMove.setPower(0);
                 steelMove.setCategory(3);
                 steelMove.setStatChange(2);
+                steelMove.setStatChangePower(2);
                 steelMove.setStatChangeType(3);
                 break;
         }
@@ -184,6 +188,7 @@ public class MoveList extends Moves {
                 Move.setCategory(3);
                 Move.setStatChange(2);
                 Move.setStatChangeType(3);
+                Move.setStatChangePower(2);
                 break;
             case 2:
                 // Psychic 

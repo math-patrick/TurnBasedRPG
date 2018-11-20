@@ -23,7 +23,7 @@ public class DamageCalculation implements Serializable  {
         int category = move.getCategory();
         double damage = (((((2 * attacker.getLevel() / 5.0)) + 2)
                 * move.getPower()
-                * (attacker.getAttackValue(category) / defender.getDefenseValue(category))) / 50.0) + 2;
+                * (attacker.getAttackTemp(category) / defender.getDefenseTemp(category))) / 50.0) + 2;
         boolean isCrit = rand.nextInt(24) == 1;
         double randomNumber = (rand.nextInt(16) + 85) / 100.0;
         double effective = 1;
@@ -33,7 +33,7 @@ public class DamageCalculation implements Serializable  {
         
         setDamage(damage * modifier);
         
-        String message = attacker.getName() + " utilizou " + move.getName() + " e causou" + getDamage() + " de dano!";
+        String message = attacker.getName() + " utilizou " + move.getName() + " e causou " + Math.round(getDamage()) + " de dano!";
         if (isCrit) {
             message += " Um ataque critíco!";
         }

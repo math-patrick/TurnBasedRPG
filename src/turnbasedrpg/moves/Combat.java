@@ -46,13 +46,13 @@ public class Combat implements Serializable {
 
         if (calculateSpeedPriority() == 1) {
             attacker = player1;
-            defender = player1;
+            defender = player2;
             attackerMove = attacker.getPokemonMove(moveID);
             defenderMove = defender.getPokemonMove(moveID);
             setFirstPlayerID(1);
         } else {
             attacker = player2;
-            defender = player2;
+            defender = player1;
             attackerMove = attacker.getPokemonMove(moveID2);
             defenderMove = defender.getPokemonMove(moveID2);
             setFirstPlayerID(2);
@@ -64,9 +64,11 @@ public class Combat implements Serializable {
         if (attackerMove.getStatChange() == 1) {
             // Debuff no inimigo
             defender.statModifier(attackerMove.statChangePower, attackerMove.statChangeType);
+            setFirstMessage(attacker.getName() + " utilizou " + attackerMove.getName() + ". "+ attackerMove.getStatChangeName() + " aumentou em " + attackerMove.statChangePower + " estágios!");
         } else if (attackerMove.getStatChange() == 2) {
             // Buff nele mesmo
             attacker.statModifier(attackerMove.statChangePower, attackerMove.statChangeType);
+            setFirstMessage(attacker.getName() + " utilizou " + attackerMove.getName() + ". "+ attackerMove.getStatChangeName() + " de " + defender.getName() + " diminuiu em " + attackerMove.statChangePower + " estágios!");
         }
         
         if (attackerMove.getCategory() != 3) {
@@ -81,10 +83,22 @@ public class Combat implements Serializable {
             setWinnerID(attacker.getOT());
             setSecondMessage(null);
         } else {
-            damageCalculation.calculateDamage(defender, attacker, defenderMove);
-            setSecondMessage(damageCalculation.getMessage());
-            double dmgSecond = damageCalculation.getDamage();
-            healthAttacker -= dmgSecond;
+            if (defenderMove.getStatChange() == 1) {
+                // Debuff no inimigo
+                attacker.statModifier(defenderMove.statChangePower, defenderMove.statChangeType);
+                setSecondMessage(defender.getName() + " utilizou " + defenderMove.getName() + ". "+ defenderMove.getStatChangeName() + " aumentou em " + defenderMove.statChangePower + " estágios!");
+            } else if (defenderMove.getStatChange() == 2) {
+                // Buff nele mesmo
+                defender.statModifier(defenderMove.statChangePower, defenderMove.statChangeType);
+                setSecondMessage(defender.getName() + " utilizou " + defenderMove.getName() + ". "+ defenderMove.getStatChangeName() + " de " + attacker.getName() + " diminuiu em " + defenderMove.statChangePower + " estágios!");
+            }
+
+            if (defenderMove.getCategory() != 3) {
+                damageCalculation.calculateDamage(defender, attacker, defenderMove);
+                setSecondMessage(damageCalculation.getMessage());
+                double dmgSecond = damageCalculation.getDamage();
+                healthAttacker -= dmgSecond;
+            }           
 
             if (healthAttacker < 0) {
                 setWinnerID(defender.getOT());

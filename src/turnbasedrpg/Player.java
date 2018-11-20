@@ -320,14 +320,14 @@ public final class Player extends JFrame {
         BufferedImage enemyImageLocal = ImageIO.read(new File((img)));
         this.enemyImage.setIcon(new ImageIcon(enemyImageLocal));
 
-        combatInfo.setText("Você: [" + getPlayerPokemon().getHealthValue()
-                + "/" + getPlayerPokemon().getMaxHealthValue() + "]"
-                + "\nOponente: [" + getEnemyPokemon().getHealthValue()
-                + "/" + getEnemyPokemon().getMaxHealthValue() + "]");
+        combatInfo.setText("Você: [" + Math.round(getPlayerPokemon().getHealthValue())
+                + "/" + Math.round(getPlayerPokemon().getMaxHealthValue()) + "]"
+                + "\nOponente: [" + Math.round(getEnemyPokemon().getHealthValue())
+                + "/" + Math.round(getEnemyPokemon().getMaxHealthValue()) + "]");
 
         combatLog.setText(combat.getFirstMessage());
         if (combat.getSecondMessage()!=null) {
-            combatLog.setText(combatLog.getText() + "\n" + combat.getFirstMessage());
+            combatLog.setText(combatLog.getText() + "\n" + combat.getSecondMessage());
         }
         if (combat.getWinnerID()!=0) {
             if (combat.getWinnerID() == clientSideConnection.getPlayerID()) {

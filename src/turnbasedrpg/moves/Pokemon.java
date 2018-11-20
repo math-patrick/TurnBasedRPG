@@ -57,6 +57,12 @@ public class Pokemon implements Serializable {
         // Special
         setDefenseValue(calculateStatValue(getDefenseStat(2), getSpecialDefenseIV()), 2);
         setAttackValue(calculateStatValue(getAttackStat(2), getSpecialAttackIV()), 2);
+        
+        setPhysicalAttackTemp(getAttackValue(1));
+        setSpecialAttackTemp(getAttackValue(2));
+        setPhysicalDefenseTemp(getDefenseValue(1));
+        setSpecialDefenseTemp(getDefenseValue(2));
+        setSpeedTemp(getSpeedValue());
     }
 
     public double calculateStatValue(double base, double IV, int isHealth) {
@@ -108,34 +114,36 @@ public class Pokemon implements Serializable {
         }
         
         double multiplier;
-        
+        int upper = 2;
+        int down = 2;
         if (stat > 0) {
-            multiplier = stat * 0.5;
-            multiplier ++;
+            upper+=stat;
         } else if (stat < 0) {
-            
+            down+=stat;
         }
+        
+        multiplier = (upper/down);
         
         switch(type) {
             // Attack
             case 1: 
-                setPhysicalAttackModifier(stat);
+                setPhysicalAttackTemp(getAttackValue(1) * multiplier);
                 break;
             // SAttack
             case 2: 
-                setSpecialAttackModifier(stat);
+                setSpecialAttackTemp(getAttackValue(2) * multiplier);
                 break;
             // Defense
             case 3: 
-                setPhysicalDefenseModifier(stat);
+                setPhysicalDefenseTemp(getDefenseValue(1) * multiplier);
                 break;
             // SDefense
             case 4: 
-                setSpecialDefenseModifier(stat);
+                setSpecialDefenseTemp(getDefenseValue(2) * multiplier);
                 break;
             // Speed
             case 5: 
-                setSpeedModifier(stat);
+                setSpeedTemp(getSpeedValue() * multiplier);
                 break;
         }
     }
@@ -296,6 +304,38 @@ public class Pokemon implements Serializable {
             this.physicalAttack[2] = attack;
         } else {
             this.specialAttack[2] = attack;
+        }
+    }
+    
+    public double getAttackTemp(int type) {
+        if (type == 1) { // Fisico
+            return getPhysicalAttackTemp();
+        } else { // Fisico
+            return getSpecialAttackTemp();
+        }
+    }
+    
+    public void setAttackTemp(double attack, int type) {
+        if (type == 1) { // Fisico
+            setPhysicalAttackTemp(attack);
+        } else {
+            setSpecialAttackTemp(attack);
+        }
+    }
+    
+    public double getDefenseTemp(int type) {
+        if (type == 1) { // Fisico
+            return getPhysicalDefenseTemp();
+        } else { // Fisico
+            return getSpecialDefenseTemp();
+        }
+    }
+    
+    public void setDefenseTemp(double attack, int type) {
+        if (type == 1) { // Fisico
+            setPhysicalDefenseTemp(attack);
+        } else {
+            setSpecialDefenseTemp(attack);
         }
     }
 
