@@ -117,6 +117,10 @@ public final class Player extends JFrame {
         b2.setToolTipText(setUpButton(1));
         b3.setToolTipText(setUpButton(2));
         b4.setToolTipText(setUpButton(3));
+        b1.setFont(new Font("Courier New", Font.PLAIN, 22));
+        b2.setFont(new Font("Courier New", Font.PLAIN, 22));
+        b3.setFont(new Font("Courier New", Font.PLAIN, 22));
+        b4.setFont(new Font("Courier New", Font.PLAIN, 22));
 
         // ID dos botões
         b1.setName("0");
@@ -172,10 +176,13 @@ public final class Player extends JFrame {
         combatLog.setLineWrap(true);
         combatLog.setEditable(false);
 
+        combatLog.setFont(new Font("Courier New", Font.PLAIN, 12));
+
         combatInfo.setWrapStyleWord(true);
         combatInfo.setLineWrap(true);
         combatInfo.setEditable(false);
 
+        combatInfo.setFont(new Font("Courier New", Font.PLAIN, 20));
         // Adiciona os botões na tela
         buttons.setLayout(new GridLayout(2, 2));
         buttons.add(b1);
@@ -239,7 +246,7 @@ public final class Player extends JFrame {
             @Override
             public void actionPerformed(ActionEvent event) {
                 JButton button = (JButton) event.getSource();
-                
+
                 if (button.isEnabled()) {
 
                     // Desabilita os botões
@@ -322,7 +329,8 @@ public final class Player extends JFrame {
     public static void main(String[] args) throws IOException, URISyntaxException, UnsupportedLookAndFeelException {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {}
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        }
         Player p = new Player(500, 100);
         p.setUpInitialGUI();
     }
