@@ -48,13 +48,13 @@ public class Combat implements Serializable {
             attacker = player1;
             defender = player2;
             attackerMove = attacker.getPokemonMove(moveID);
-            defenderMove = defender.getPokemonMove(moveID);
+            defenderMove = defender.getPokemonMove(moveID2);
             setFirstPlayerID(1);
         } else {
             attacker = player2;
             defender = player1;
             attackerMove = attacker.getPokemonMove(moveID2);
-            defenderMove = defender.getPokemonMove(moveID2);
+            defenderMove = defender.getPokemonMove(moveID);
             setFirstPlayerID(2);
         }
 

@@ -102,7 +102,8 @@ public class Server {
 
                 p1ButtonNum = -1;
                 p2ButtonNum = -1;
-                while (true) {
+                boolean cont = true;
+                while (cont) {
                     if (getP1Pokemon() != null && getP2Pokemon() != null && combat.isReady()) {
                         if (playerID == 1) {
                             p1ButtonNum = dataIn.readInt();
@@ -120,9 +121,15 @@ public class Server {
 
                             player1.sendCombat(combat);
                             player2.sendCombat(combat);
+                            
+                            if (combat.getWinnerID()!=0) {
+                                cont = false;
+                            }
                         }
                     }
                 }
+                
+                acceptConnections();
             } catch (IOException ex) {
                 System.out.println(ex);
             } catch (ClassNotFoundException ex) {

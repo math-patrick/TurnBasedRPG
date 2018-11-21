@@ -53,10 +53,8 @@ public final class Player extends JFrame {
     private JButton p3;
     private JButton p4;
 
-    private JLabel b1desc;
-    private JLabel b2desc;
-    private JLabel b3desc;
-    private JLabel b4desc;
+    private JLabel playerHealth;
+    private JLabel enemyHealth;
     private JLabel playerImage;
     private JLabel enemyImage;
 
@@ -73,6 +71,8 @@ public final class Player extends JFrame {
         contentPane = this.getContentPane();
         combatLog = new JTextArea();
         combatInfo = new JTextArea();
+        playerHealth = new JLabel();
+        enemyHealth = new JLabel();
         sprites = new JPanel();
         buttons = new JPanel();
         buttonsDesc = new JPanel();
@@ -117,10 +117,10 @@ public final class Player extends JFrame {
         b2.setToolTipText(setUpButton(1));
         b3.setToolTipText(setUpButton(2));
         b4.setToolTipText(setUpButton(3));
-        b1.setFont(new Font("Courier New", Font.PLAIN, 22));
-        b2.setFont(new Font("Courier New", Font.PLAIN, 22));
-        b3.setFont(new Font("Courier New", Font.PLAIN, 22));
-        b4.setFont(new Font("Courier New", Font.PLAIN, 22));
+        b1.setFont(new Font("Courier New", Font.PLAIN, 18));
+        b2.setFont(new Font("Courier New", Font.PLAIN, 18));
+        b3.setFont(new Font("Courier New", Font.PLAIN, 18));
+        b4.setFont(new Font("Courier New", Font.PLAIN, 18));
 
         // ID dos botões
         b1.setName("0");
@@ -153,6 +153,8 @@ public final class Player extends JFrame {
         return ("<html>"
                 + "<p style='font-size: 8px'><b>Tipo</b>: "
                 + this.playerPokemon.getPokemonMove(id).getTypeName() + "</p>"
+                + "<p style='font-size: 8px'><b>Poder</b>: "
+                + ((this.playerPokemon.getPokemonMove(id).getPower() == 0) ? "-" : this.playerPokemon.getPokemonMove(id).getPower()) + "</p>"
                 + "<p style='font-size: 8px'><b>Descrição</b>: "
                 + this.playerPokemon.getPokemonMove(id).getDesc() + "</p>"
                 + "</html>");
@@ -165,7 +167,9 @@ public final class Player extends JFrame {
         contentPane.remove(p2);
         contentPane.remove(p3);
 
-        sprites.setLayout(new GridLayout(1, 4));
+        sprites.setLayout(new GridLayout(2, 2));
+        sprites.add(playerHealth);
+        sprites.add(enemyHealth);
         sprites.add(playerImage);
         sprites.add(enemyImage);
         contentPane.add(sprites);
@@ -300,10 +304,12 @@ public final class Player extends JFrame {
             combatLog.setText(combatLog.getText() + "\n" + combat.getSecondMessage());
         }
 
-        combatInfo.setText("Você: [" + Math.round(getPlayerPokemon().getHealthValue())
-                + "/" + Math.round(getPlayerPokemon().getMaxHealthValue()) + "]"
-                + "\nOponente: [" + Math.round(getEnemyPokemon().getHealthValue())
-                + "/" + Math.round(getEnemyPokemon().getMaxHealthValue()) + "]");
+        playerHealth.setHorizontalAlignment(JLabel.CENTER);
+        enemyHealth.setHorizontalAlignment(JLabel.CENTER);
+        playerHealth.setText("<html><p style='text-align: center; font-size: 20pt'>" +getPlayerPokemon().getName() + "<br>[" + Math.round(getPlayerPokemon().getHealthValue())
+                + "/" + Math.round(getPlayerPokemon().getMaxHealthValue()) + "]</p></html>");
+        enemyHealth.setText("<html><p style='text-align: center; font-size: 20pt'>" +getEnemyPokemon().getName() + "<br>[" + Math.round(getEnemyPokemon().getHealthValue())
+                + "/" + Math.round(getEnemyPokemon().getMaxHealthValue()) + "]</p></html>");
 
         if (combat.getWinnerID() != 0) {
             if (combat.getWinnerID() == clientSideConnection.getPlayerID()) {
