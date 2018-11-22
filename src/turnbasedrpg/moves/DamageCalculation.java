@@ -31,7 +31,7 @@ public class DamageCalculation implements Serializable  {
                 ? 1.5 : 1);
         double modifier = (1 * (isCrit ? 1.5 : 1) * (randomNumber) * STAB * effective);
         
-        setDamage((damage * modifier)/2);
+        setDamage((damage * modifier)/4);
         
         String message = attacker.getName() + " utilizou " + move.getName() + " e causou " + Math.round(getDamage()) + " de dano!";
         if (isCrit) {

@@ -29,7 +29,7 @@ final class ClientSideConnection {
     public ClientSideConnection(Pokemon pokemon) {
         System.out.println("Cliente conectando..");
         try {
-            socket = new Socket("localhost", 51734); // Inicia o pedido de conexão ao servidor
+            socket = new Socket("192.168.2.127", 51734); // Inicia o pedido de conexão ao servidor
             dataOut = new ObjectOutputStream(socket.getOutputStream());
             dataOut.flush();
             dataIn = new ObjectInputStream(socket.getInputStream());

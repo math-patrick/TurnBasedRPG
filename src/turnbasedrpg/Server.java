@@ -49,7 +49,7 @@ public class Server {
     public void acceptConnections() {
         try {
             System.out.println("Esperando por conexoes.. ");
-            while (numPlayers <= 2) {
+            while (numPlayers <= 1) {
                 Socket socket = serverSocket.accept();
                 numPlayers++;
                 System.out.println("Jogador número " + numPlayers + " se conectou!");

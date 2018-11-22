@@ -23,7 +23,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import turnbasedrpg.moves.Combat;
@@ -53,8 +52,8 @@ public final class Player extends JFrame {
     private JButton p3;
     private JButton p4;
 
-    private JLabel playerHealth;
-    private JLabel enemyHealth;
+    private final JLabel playerHealth;
+    private final JLabel enemyHealth;
     private JLabel playerImage;
     private JLabel enemyImage;
 
@@ -250,6 +249,7 @@ public final class Player extends JFrame {
         p1.addActionListener(actionListener);
         p2.addActionListener(actionListener);
         p3.addActionListener(actionListener);
+        p4.addActionListener(actionListener);
     }
 
     public void setUpButtons() {

@@ -122,7 +122,7 @@ public class PokemonList extends Pokemon {
         movesArray[0] = new MoveList().getGroundMove(1);
         movesArray[1] = new MoveList().getGroundMove(2);
         movesArray[2] = new MoveList().getNormalMove(2);
-        movesArray[3] = new MoveList().getGroundMove(5);
+        movesArray[3] = new MoveList().getNormalMove(5);
      
         Pokemon Pokemon = new Pokemon();
         Pokemon.setNumber(105);
