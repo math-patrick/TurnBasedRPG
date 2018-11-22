@@ -16,6 +16,8 @@ public class PokemonList extends Pokemon {
                 return getCharizard();
             case "9":
                 return getBlastoise();
+            case "105":
+                return getMarowak();
             case "282":
                 return getGardevoir();
             default:
@@ -110,6 +112,31 @@ public class PokemonList extends Pokemon {
         Pokemon.setAttackStat(125, 2);
         Pokemon.setDefenseStat(115, 2);
         Pokemon.setSpeedStat(80);
+        
+        Pokemon.calculateStats();
+        return Pokemon;
+    }
+    
+    public Pokemon getMarowak() {
+        Moves[] movesArray = new Moves[4];
+        movesArray[0] = new MoveList().getGroundMove(1);
+        movesArray[1] = new MoveList().getGroundMove(2);
+        movesArray[2] = new MoveList().getNormalMove(2);
+        movesArray[3] = new MoveList().getGroundMove(5);
+     
+        Pokemon Pokemon = new Pokemon();
+        Pokemon.setNumber(105);
+        Pokemon.setName("Marowak");
+        Pokemon.setMoves(movesArray);
+        Pokemon.setLevel(50);
+        Pokemon.setPrimaryType(6);
+        
+        Pokemon.setHealthStat(60);
+        Pokemon.setAttackStat(80, 1);
+        Pokemon.setDefenseStat(110, 1);
+        Pokemon.setAttackStat(50, 2);
+        Pokemon.setDefenseStat(80, 2);
+        Pokemon.setSpeedStat(45);
         
         Pokemon.calculateStats();
         return Pokemon;

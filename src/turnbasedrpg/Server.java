@@ -49,7 +49,7 @@ public class Server {
     public void acceptConnections() {
         try {
             System.out.println("Esperando por conexoes.. ");
-            while (numPlayers < 2) {
+            while (numPlayers <= 2) {
                 Socket socket = serverSocket.accept();
                 numPlayers++;
                 System.out.println("Jogador número " + numPlayers + " se conectou!");
@@ -100,8 +100,7 @@ public class Server {
                     combat.setPlayer2(getP2Pokemon());
                 }
 
-                p1ButtonNum = -1;
-                p2ButtonNum = -1;
+                p1ButtonNum = p2ButtonNum = -1;
                 boolean cont = true;
                 while (cont) {
                     if (getP1Pokemon() != null && getP2Pokemon() != null && combat.isReady()) {
@@ -113,8 +112,7 @@ public class Server {
                         
                         if (p1ButtonNum!=-1 && p2ButtonNum!=-1) {
                             combat.calculateDamage(p1ButtonNum, p2ButtonNum);
-                            p1ButtonNum = -1;
-                            p2ButtonNum = -1;
+                            p1ButtonNum = p2ButtonNum = -1;
 
                             setP1Pokemon(combat.getPlayer1());
                             setP2Pokemon(combat.getPlayer2());
@@ -128,8 +126,6 @@ public class Server {
                         }
                     }
                 }
-                
-                acceptConnections();
             } catch (IOException ex) {
                 System.out.println(ex);
             } catch (ClassNotFoundException ex) {

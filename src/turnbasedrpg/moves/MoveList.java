@@ -25,6 +25,7 @@ public class MoveList extends Moves {
             case 2:
                 // Tail Whip
                 move.setName("Chicote de Calda");
+                move.setDesc("O usuário abana seu rabo de maneira fofa, fazendo com que os Pokémon oponentes sejam menos cautelosos e reduzam seu status de Defesa.");
                 move.setPP(30);
                 move.setPower(0);
                 move.setCategory(3);
@@ -201,6 +202,32 @@ public class MoveList extends Moves {
                 Move.setPP(10);
                 Move.setPower(90);
                 Move.setCategory(2);
+                break;
+        }
+        return Move;
+    }
+    
+    public Moves getGroundMove(int id) {
+        Moves Move = new Moves();
+        Move.setType(16);
+        switch (id) {
+            case 1:
+                // Bonemerang
+                Move.setName("Ossomerangue");
+                Move.setDesc("O usuário joga o osso que ele segura. O osso faz um loop ao redor para acertar o alvo duas vezes - indo e vindo.");
+                Move.setPP(10);
+                Move.setAccuracy(90);
+                Move.setPower(100);
+                Move.setCategory(1);
+                break;
+            case 2:
+                // Bone Club
+                Move.setName("Clube Ósseo");
+                Move.setDesc("O usuário bate no alvo com um osso.");
+                Move.setPP(20);
+                Move.setAccuracy(85);
+                Move.setPower(65);
+                Move.setCategory(1);
                 break;
         }
         return Move;

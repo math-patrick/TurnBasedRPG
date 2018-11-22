@@ -18,7 +18,7 @@ import turnbasedrpg.moves.Pokemon;
  *
  * @author Zhaetar
  */
-class ClientSideConnection {
+final class ClientSideConnection {
 
     private boolean isAlive = false;
     private Socket socket;

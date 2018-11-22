@@ -83,26 +83,33 @@ public final class Player extends JFrame {
     public void configureButtonsPokemonPicker() throws IOException, URISyntaxException {
         // Charizard
         URI img3 = getClass().getResource("/turnbasedrpg/pokemon/6.png").toURI();
-        BufferedImage myPicture3 = ImageIO.read(new File((img3)));
-        p1 = new JButton(new ImageIcon(myPicture3));
+        BufferedImage myPicture6 = ImageIO.read(new File((img3)));
+        p1 = new JButton(new ImageIcon(myPicture6));
         p1.setMinimumSize(new Dimension(80, 80));
-
+        p1.setName("6");
+        
         // Blastoise
         URI img4 = getClass().getResource("/turnbasedrpg/pokemon/9.png").toURI();
-        BufferedImage myPicture4 = ImageIO.read(new File((img4)));
-        p2 = new JButton(new ImageIcon(myPicture4));
+        BufferedImage myPicture9 = ImageIO.read(new File((img4)));
+        p2 = new JButton(new ImageIcon(myPicture9));
         p2.setMinimumSize(new Dimension(80, 80));
+        p2.setName("9");
 
+        // Marowak
+        URI img105 = getClass().getResource("/turnbasedrpg/pokemon/105.png").toURI();
+        BufferedImage myPicture105 = ImageIO.read(new File((img105)));
+        p3 = new JButton(new ImageIcon(myPicture105));
+        p3.setMinimumSize(new Dimension(80, 80));
+        p3.setName("105");
+        
         // Gardevoir
         URI img5 = getClass().getResource("/turnbasedrpg/pokemon/282.png").toURI();
-        BufferedImage myPicture5 = ImageIO.read(new File((img5)));
-        p3 = new JButton(new ImageIcon(myPicture5));
-        p3.setMinimumSize(new Dimension(80, 80));
+        BufferedImage myPicture282 = ImageIO.read(new File((img5)));
+        p4 = new JButton(new ImageIcon(myPicture282));
+        p4.setMinimumSize(new Dimension(80, 80));
+        p4.setName("282");
 
         // ID dos pokémon
-        p1.setName("6");
-        p2.setName("9");
-        p3.setName("282");
 
         setUpPokemonChooserButtons();
     }
@@ -166,6 +173,7 @@ public final class Player extends JFrame {
         contentPane.remove(p1);
         contentPane.remove(p2);
         contentPane.remove(p3);
+        contentPane.remove(p4);
 
         sprites.setLayout(new GridLayout(2, 2));
         sprites.add(playerHealth);
@@ -217,6 +225,7 @@ public final class Player extends JFrame {
         contentPane.add(p1);
         contentPane.add(p2);
         contentPane.add(p3);
+        contentPane.add(p4);
         this.setVisible(true);
     }
 
