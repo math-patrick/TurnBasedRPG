@@ -33,73 +33,75 @@ public class Moves implements Serializable {
      * Move power points, defaults 20
      */
     public int pp = 20;
-    
+
     // Accuracy
     public int accuracy = 100;
-    
+
     // type
     public int type = 1;
-    
+
     // Category (1. Physical, 2. Special, 3. Status)
     public int category = 1;
-    
+
     // Does it changes a pokémon status? (1 - Yes (enemy), 2 - Yes (self), 0 - No)
     public int statChange = 0;
-    
+
     // What stat does it change? (1 - Attack, 2 - Special Attack, 3 - Defense, 4 - Special Defense, 5 - Speed, 6 - Accuracy, 7 - Avoidance)
     public int statChangeType = 1;
-    
+
     // By how much?
     public int statChangePower = 1;
-    
+
     // Does it afflict a status change? (1 - Yes, 2 - No)
     public int statusChange = 2;
-    
+
     // Which one? (1 - Confusion, 2 - Burn, 3 - Frozen, 4 - Sleep, 5 - Poison)
     public int statusChangeType = 1;
 
     public String getTypeName() {
+
         switch (getType()) {
-            case 1: // Normal
+            case 1:
                 return "Normal";
-            case 2: // Water
-                return "Aquático";
-            case 3: // Fire
-                return "Fogo";
-            case 4: // Grass
-                return "Planta";
-            case 5: // Flying
-                return "Voador";
-            case 6: // Steel
-                return "Metálico";
-            case 7: // Fairy
-                return "Fada";
-            case 8: // Psychic
-                return "Psiquico";
-            case 9: // Ghost
-                return "Fantasma";
-            case 10: // Dark
-                return "Noturno";
-            case 11: // Bug
-                return "Inseto";
-            case 12: // Fighting
-                return "Lutador";
-            case 13: // Electric
-                return "Elétrico";
-            case 14: // Ice
-                return "Gelo";
-            case 15: // Rock
-                return "Pedra";
-            case 16: // Ground
-                return "Terra";
-            case 17: // Poison
-                return "Venenoso";
-            case 18: // Dragon
-                return "Dragão";
+            case 2:
+                return "Water";
+            case 3:
+                return "Fire";
+            case 4:
+                return "Grass";
+            case 5:
+                return "Flying";
+            case 6:
+                return "Steel";
+            case 7:
+                return "Fairy";
+            case 8:
+                return "Psychic";
+            case 9:
+                return "Ghost";
+            case 10:
+                return "Dark";
+            case 11:
+                return "Bug";
+            case 12:
+                return "Fighting";
+            case 13:
+                return "Electric";
+            case 14:
+                return "Ice";
+            case 15:
+                return "Rock";
+            case 16:
+                return "Ground";
+            case 17:
+                return "Poison";
+            case 18:
+                return "Dragon";
             default:
                 return "Normal";
         }
     }
+
     public Color getColor() {
         switch (getType()) {
             case 1: // Normal
@@ -142,19 +144,19 @@ public class Moves implements Serializable {
                 return Color.decode("#A8A77A");
         }
     }
-    
+
     public String getStatChangeName() {    // What stat does it change? (1 - Attack, 2 - Special Attack, 3 - Defense, 4 - Special Defense, 5 - Speed, 6 - Accuracy, 7 - Avoidance)
         switch (getStatChangeType()) {
-            case 1: // Normal
-                return "Ataque";
-            case 2: // Water
-                return "Ataque especial";
-            case 3: // Fire
-                return "Defesa";
-            case 4: // Grass
-                return "Defesa especial";
+            case 1:
+                return "Physical attack";
+            case 2:
+                return "Special attack";
+            case 3:
+                return "Physical Defense";
+            case 4:
+                return "Special defense";
             default:
-                return "Velocidade";
+                return "Speed";
         }
     }
 

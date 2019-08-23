@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package turnbasedrpg;
 
 import java.io.IOException;
@@ -15,6 +10,7 @@ import turnbasedrpg.moves.Combat;
 import turnbasedrpg.moves.Pokemon;
 
 /**
+ * Client Side Connection
  *
  * @author Zhaetar
  */
@@ -27,14 +23,15 @@ final class ClientSideConnection {
     private int playerID;
 
     public ClientSideConnection(Pokemon pokemon) {
-        System.out.println("Cliente conectando..");
+        System.out.println("Connecting client..");
         try {
-            socket = new Socket("192.168.2.127", 51734); // Inicia o pedido de conexão ao servidor
+            // Start the connection
+            socket = new Socket("192.168.2.127", 51734);
             dataOut = new ObjectOutputStream(socket.getOutputStream());
             dataOut.flush();
             dataIn = new ObjectInputStream(socket.getInputStream());
             playerID = dataIn.readInt();
-            System.out.println("Conectado como jogador #" + playerID);
+            System.out.println("Connected as player #" + playerID);
             pokemon.setOT(playerID);
             sendPokemon(pokemon);
             isAlive = true;
@@ -57,7 +54,7 @@ final class ClientSideConnection {
             dataOut.writeObject(n);
             dataOut.flush();
         } catch (IOException ex) {
-            System.out.println("Erro ao enviar o " + n.getName());
+            System.out.println("Error sending the '" + n.getName() + "'");
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -121,6 +118,4 @@ final class ClientSideConnection {
     public void setPlayerID(int playerID) {
         this.playerID = playerID;
     }
-    
-    
 }

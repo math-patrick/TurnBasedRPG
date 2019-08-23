@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package turnbasedrpg;
 
 import java.io.IOException;
@@ -16,6 +11,7 @@ import turnbasedrpg.moves.Combat;
 import turnbasedrpg.moves.Pokemon;
 
 /**
+ * Server class
  *
  * @author matheus.oliveira
  */
@@ -34,7 +30,7 @@ public class Server {
     private Combat combat;
 
     public Server() {
-        System.out.println("Servidor online!");
+        System.out.println("Server online!");
         numPlayers = 0;
 
         combat = new Combat();
@@ -48,11 +44,11 @@ public class Server {
 
     public void acceptConnections() {
         try {
-            System.out.println("Esperando por conexoes.. ");
+            System.out.println("Awaiting connections.. ");
             while (numPlayers <= 1) {
                 Socket socket = serverSocket.accept();
                 numPlayers++;
-                System.out.println("Jogador número " + numPlayers + " se conectou!");
+                System.out.println("Player number " + numPlayers + " has connected!");
                 ServerSideConnection serverSideConnection = new ServerSideConnection(socket, numPlayers);
                 if (numPlayers == 1) {
                     player1 = serverSideConnection;
@@ -62,13 +58,14 @@ public class Server {
                 Thread thread = new Thread(serverSideConnection);
                 thread.start();
             }
-            System.out.println("Limite de jogadores alcançado");
+            System.out.println("Reached player limit");
         } catch (IOException ex) {
             System.out.println(ex);
         }
     }
 
     private class ServerSideConnection implements Runnable {
+
         private Socket socket;
         private ObjectInputStream dataIn;
         private ObjectOutputStream dataOut;
@@ -109,8 +106,8 @@ public class Server {
                         } else {
                             p2ButtonNum = dataIn.readInt();
                         }
-                        
-                        if (p1ButtonNum!=-1 && p2ButtonNum!=-1) {
+
+                        if (p1ButtonNum != -1 && p2ButtonNum != -1) {
                             combat.calculateDamage(p1ButtonNum, p2ButtonNum);
                             p1ButtonNum = p2ButtonNum = -1;
 
@@ -119,8 +116,8 @@ public class Server {
 
                             player1.sendCombat(combat);
                             player2.sendCombat(combat);
-                            
-                            if (combat.getWinnerID()!=0) {
+
+                            if (combat.getWinnerID() != 0) {
                                 cont = false;
                             }
                         }

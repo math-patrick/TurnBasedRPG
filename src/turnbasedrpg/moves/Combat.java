@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package turnbasedrpg.moves;
 
 import java.io.Serializable;
 
 /**
+ * Class responsible for combat interactions
  *
  * @author matheus.oliveira
  */
@@ -41,7 +37,7 @@ public class Combat implements Serializable {
         Pokemon defender;
         Moves attackerMove;
         Moves defenderMove;
-        
+
         damageCalculation = new DamageCalculation();
 
         if (calculateSpeedPriority() == 1) {
@@ -60,17 +56,17 @@ public class Combat implements Serializable {
 
         double healthDefender = defender.getHealthValue();
         double healthAttacker = attacker.getHealthValue();
-        
+
         if (attackerMove.getStatChange() == 2) {
             // Debuff no inimigo
             defender.statModifier(attackerMove.statChangePower, attackerMove.statChangeType);
-            setFirstMessage(attacker.getName() + " utilizou " + attackerMove.getName() + ". "+ attackerMove.getStatChangeName() + " aumentou em " + attackerMove.statChangePower + " estágios!");
+            setFirstMessage(attacker.getName() + " used " + attackerMove.getName() + ". " + attackerMove.getStatChangeName() + " raised by " + attackerMove.statChangePower + " stages!");
         } else if (attackerMove.getStatChange() == 1) {
             // Buff nele mesmo
             attacker.statModifier(attackerMove.statChangePower, attackerMove.statChangeType);
-            setFirstMessage(attacker.getName() + " utilizou " + attackerMove.getName() + ". "+ attackerMove.getStatChangeName() + " de " + defender.getName() + " diminuiu em " + attackerMove.statChangePower + " estágios!");
+            setFirstMessage(attacker.getName() + " used " + attackerMove.getName() + ". " + defender.getName() + "'s " + attackerMove.getStatChangeName() + " lowered by " + attackerMove.statChangePower + " stages!");
         }
-        
+
         if (attackerMove.getCategory() != 3) {
             damageCalculation.calculateDamage(attacker, defender, attackerMove);
             setFirstMessage(damageCalculation.getMessage());
@@ -86,11 +82,11 @@ public class Combat implements Serializable {
             if (defenderMove.getStatChange() == 2) {
                 // Debuff no inimigo
                 attacker.statModifier(defenderMove.statChangePower, defenderMove.statChangeType);
-                setSecondMessage(defender.getName() + " utilizou " + defenderMove.getName() + ". "+ defenderMove.getStatChangeName() + " aumentou em " + defenderMove.statChangePower + " estágios!");
+                setSecondMessage(defender.getName() + " used " + defenderMove.getName() + ". " + defenderMove.getStatChangeName() + " raised by " + defenderMove.statChangePower + " stages!");
             } else if (defenderMove.getStatChange() == 1) {
                 // Buff nele mesmo
                 defender.statModifier(defenderMove.statChangePower, defenderMove.statChangeType);
-                setSecondMessage(defender.getName() + " utilizou " + defenderMove.getName() + ". "+ defenderMove.getStatChangeName() + " de " + attacker.getName() + " diminuiu em " + defenderMove.statChangePower + " estágios!");
+                setSecondMessage(defender.getName() + " used " + defenderMove.getName() + ". " + attacker.getName() + "'s " + defenderMove.getStatChangeName() + " lowered by " + defenderMove.statChangePower + " stages!");
             }
 
             if (defenderMove.getCategory() != 3) {
@@ -99,7 +95,7 @@ public class Combat implements Serializable {
                 setSecondMessage(damageCalculation2.getMessage());
                 double dmgSecond = damageCalculation2.getDamage();
                 healthAttacker -= dmgSecond;
-            }           
+            }
 
             if (healthAttacker <= 0) {
                 setWinnerID(defender.getOT());
@@ -169,7 +165,4 @@ public class Combat implements Serializable {
     public void setWinnerID(int winnerID) {
         this.winnerID = winnerID;
     }
-    
-    
-
 }

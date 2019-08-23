@@ -1,15 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package turnbasedrpg.moves;
 
 import java.io.Serializable;
 import java.util.Random;
 
 /**
- *
+ * Class responsible for damage calculations
  * @author Zhaetar
  */
 public class DamageCalculation implements Serializable  {
@@ -21,7 +16,7 @@ public class DamageCalculation implements Serializable  {
         Random rand = new Random();
         //  Fórmula de calculo de dano: Damage = ((((2 * Level / 5 + 2) * AttackStat * AttackPower / DefenseStat) / 50) + 2) * STAB * Weakness/Resistance * RandomNumber / 100
         int category = move.getCategory();
-        double damage = (((((2 * attacker.getLevel() / 5.0)) + 2)
+        double tempDamage = (((((2 * attacker.getLevel() / 5.0)) + 2)
                 * move.getPower()
                 * (attacker.getAttackTemp(category) / defender.getDefenseTemp(category))) / 50.0) + 2;
         boolean isCrit = rand.nextInt(24) == 1;
@@ -31,16 +26,15 @@ public class DamageCalculation implements Serializable  {
                 ? 1.5 : 1);
         double modifier = (1 * (isCrit ? 1.5 : 1) * (randomNumber) * STAB * effective);
         
-        setDamage((damage * modifier)/4);
+        setDamage((tempDamage * modifier)/4);
         
-        String message = attacker.getName() + " utilizou " + move.getName() + " e causou " + Math.round(getDamage()) + " de dano!";
+        message = attacker.getName() + " used " + move.getName() + " and dealt " + Math.round(getDamage()) + " damage!";
         if (isCrit) {
-            message += " Um ataque critíco!";
+            message += " A critical hit!";
         }
         if (effective!=1) {
-            message+= (effective > 1) ? " Super efetivo!" : " Não foi muito efetivo..";
+            message+= (effective > 1) ? " Supper effective!" : " Not very effective..";
         }
-        setMessage(message);
     }
 
     public String getMessage() {

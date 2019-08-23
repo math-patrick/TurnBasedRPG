@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package turnbasedrpg;
 
 import javax.swing.JFrame;
@@ -30,8 +25,9 @@ import turnbasedrpg.moves.Pokemon;
 import turnbasedrpg.moves.PokemonList;
 
 /**
+ * Player class
  *
- * @author matheus.oliveira
+ * @author Zhaetar
  */
 public final class Player extends JFrame {
 
@@ -66,7 +62,6 @@ public final class Player extends JFrame {
     private ClientSideConnection clientSideConnection;
 
     public Player(int width, int height) throws IOException, URISyntaxException {
-        // Configura as variavéis
         contentPane = this.getContentPane();
         combatLog = new JTextArea();
         combatInfo = new JTextArea();
@@ -86,7 +81,7 @@ public final class Player extends JFrame {
         p1 = new JButton(new ImageIcon(myPicture6));
         p1.setMinimumSize(new Dimension(80, 80));
         p1.setName("6");
-        
+
         // Blastoise
         URI img4 = getClass().getResource("/turnbasedrpg/pokemon/9.png").toURI();
         BufferedImage myPicture9 = ImageIO.read(new File((img4)));
@@ -100,7 +95,7 @@ public final class Player extends JFrame {
         p3 = new JButton(new ImageIcon(myPicture105));
         p3.setMinimumSize(new Dimension(80, 80));
         p3.setName("105");
-        
+
         // Gardevoir
         URI img5 = getClass().getResource("/turnbasedrpg/pokemon/282.png").toURI();
         BufferedImage myPicture282 = ImageIO.read(new File((img5)));
@@ -108,13 +103,12 @@ public final class Player extends JFrame {
         p4.setMinimumSize(new Dimension(80, 80));
         p4.setName("282");
 
-        // ID dos pokémon
-
+        // Pokémon ID
         setUpPokemonChooserButtons();
     }
 
     public void configureButtons() throws IOException, URISyntaxException {
-        // Configura os botões
+        // Button setup
         b1 = new JButton(this.playerPokemon.getPokemonMove(0).getName());
         b2 = new JButton(this.playerPokemon.getPokemonMove(1).getName());
         b3 = new JButton(this.playerPokemon.getPokemonMove(2).getName());
@@ -128,19 +122,19 @@ public final class Player extends JFrame {
         b3.setFont(new Font("Courier New", Font.PLAIN, 18));
         b4.setFont(new Font("Courier New", Font.PLAIN, 18));
 
-        // ID dos botões
+        // Button identifiers
         b1.setName("0");
         b2.setName("1");
         b3.setName("2");
         b4.setName("3");
 
-        // Imagem do jogador
+        // Player picture
         URI img = getClass().getResource("/turnbasedrpg/pokemon/back/" + playerPokemon.getNumber() + ".png").toURI();
         BufferedImage myPicture = ImageIO.read(new File((img)));
         playerImage = new JLabel(new ImageIcon(myPicture));
         playerImage.setMinimumSize(new Dimension(80, 80));
 
-        // Imagem do oponente (ovo)
+        // Enemy initial image (egg)
         URI img2 = getClass().getResource("/turnbasedrpg/pokemon/egg.png").toURI();
         BufferedImage myPicture2 = ImageIO.read(new File((img2)));
         enemyImage = new JLabel(new ImageIcon(myPicture2));
@@ -151,7 +145,7 @@ public final class Player extends JFrame {
             setUpGUI();
             setUpButtons();
         } else {
-            JOptionPane.showMessageDialog(null, "Conexão recusada. Tente novamente em breve.");
+            JOptionPane.showMessageDialog(null, "Connection refused. Try again soon!");
         }
     }
 
@@ -182,7 +176,7 @@ public final class Player extends JFrame {
         contentPane.add(sprites);
 
         // Adiciona mensagens na caixa de mensagens
-        combatLog.setText("Iniciando jogo...");
+        combatLog.setText("Opening game...");
         combatLog.setWrapStyleWord(true);
         combatLog.setLineWrap(true);
         combatLog.setEditable(false);
@@ -205,7 +199,7 @@ public final class Player extends JFrame {
         contentPane.add(combatLog);
         contentPane.add(combatInfo);
 
-        combatLog.setText("Conectado como jogador #" + clientSideConnection.getPlayerID());
+        combatLog.setText("Connected as player #" + clientSideConnection.getPlayerID());
         buttonsEnabled = true;
         toggleButtons();
 
@@ -214,7 +208,7 @@ public final class Player extends JFrame {
 
     public void setUpInitialGUI() {
         this.setSize(500, 350);
-        this.setTitle("Escolha seu pokémon");
+        this.setTitle("Choose your pokémon");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -261,12 +255,11 @@ public final class Player extends JFrame {
                 JButton button = (JButton) event.getSource();
 
                 if (button.isEnabled()) {
-
-                    // Desabilita os botões
+                    // Disable buttons
                     buttonsEnabled = false;
                     toggleButtons();
 
-                    // Envia qual ataque foi utilizado para o servidor
+                    // Send which attack was used
                     clientSideConnection.sendButtonNum(Integer.parseInt(button.getName()));
 
                     Thread t = new Thread(new Runnable() {
@@ -303,7 +296,7 @@ public final class Player extends JFrame {
         setPlayerPokemon((this.clientSideConnection.getPlayerID() == 1) ? combat.getPlayer1() : combat.getPlayer2());
         setEnemyPokemon((this.clientSideConnection.getPlayerID() == 1) ? combat.getPlayer2() : combat.getPlayer1());
 
-        // Atualiza a imagem do oponente
+        // Update enemy player picture
         URI img = getClass().getResource("/turnbasedrpg/pokemon/" + getEnemyPokemon().getNumber() + ".png").toURI();
         BufferedImage enemyImageLocal = ImageIO.read(new File((img)));
         this.enemyImage.setIcon(new ImageIcon(enemyImageLocal));
@@ -315,9 +308,9 @@ public final class Player extends JFrame {
 
         playerHealth.setHorizontalAlignment(JLabel.CENTER);
         enemyHealth.setHorizontalAlignment(JLabel.CENTER);
-        playerHealth.setText("<html><p style='text-align: center; font-size: 20pt'>" +getPlayerPokemon().getName() + "<br>[" + Math.round(getPlayerPokemon().getHealthValue())
+        playerHealth.setText("<html><p style='text-align: center; font-size: 20pt'>" + getPlayerPokemon().getName() + "<br>[" + Math.round(getPlayerPokemon().getHealthValue())
                 + "/" + Math.round(getPlayerPokemon().getMaxHealthValue()) + "]</p></html>");
-        enemyHealth.setText("<html><p style='text-align: center; font-size: 20pt'>" +getEnemyPokemon().getName() + "<br>[" + Math.round(getEnemyPokemon().getHealthValue())
+        enemyHealth.setText("<html><p style='text-align: center; font-size: 20pt'>" + getEnemyPokemon().getName() + "<br>[" + Math.round(getEnemyPokemon().getHealthValue())
                 + "/" + Math.round(getEnemyPokemon().getMaxHealthValue()) + "]</p></html>");
 
         if (combat.getWinnerID() != 0) {
@@ -329,7 +322,6 @@ public final class Player extends JFrame {
                         + "\nVocê foi derrotado por " + getEnemyPokemon().getName() + "!");
             }
         } else {
-            // Habilita botões
             buttonsEnabled = true;
             toggleButtons();
         }

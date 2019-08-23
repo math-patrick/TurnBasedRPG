@@ -39,7 +39,7 @@ public class Pokemon implements Serializable {
 
     public void calculateStats() {
         Random rand = new Random();
-        // Gera IVs aleatórios
+        // Generate random Inner Values (IV)
         setPhysicalAttackIV(rand.nextInt(31));
         setSpecialAttackIV(rand.nextInt(31));
         setPhysicalDefenseIV(rand.nextInt(31));
@@ -47,7 +47,7 @@ public class Pokemon implements Serializable {
         setSpeedIV(rand.nextInt(31));
         setHealthIV(rand.nextInt(31));
 
-        // Calcula os valores dos stats
+        // Calculate stat values
         setHealthValue(calculateStatValue(getHealthStat(), getHealthIV(), 1));
         setMaxHealthValue(getHealthValue());
         setSpeedValue(calculateStatValue(getSpeedStat(), getSpeedIV()));

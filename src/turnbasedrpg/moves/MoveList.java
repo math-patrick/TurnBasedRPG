@@ -1,31 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package turnbasedrpg.moves;
 
 /**
+ * Move database
  *
  * @author Zhaetar
  */
 public class MoveList extends Moves {
-    
+
     public Moves getNormalMove(int id) {
         Moves move = new Moves();
         move.setType(1);
         switch (id) {
             case 1:
-                // Tackle
-                move.setName("Investida");
+                move.setName("Tackle");
+                move.setDesc("A physical attack in which the user charges and slams into the target with its whole body.");
                 move.setPP(35);
                 move.setPower(40);
                 move.setCategory(1);
                 break;
             case 2:
-                // Tail Whip
-                move.setName("Chicote de Calda");
-                move.setDesc("O usuário abana seu rabo de maneira fofa, fazendo com que os Pokémon oponentes sejam menos cautelosos e reduzam seu status de Defesa.");
+                move.setName("Tail Whip");
+                move.setDesc("The user wags its tail cutely, making opposing Pokémon less wary and lowering their Defense stat.");
                 move.setPP(30);
                 move.setPower(0);
                 move.setCategory(3);
@@ -34,17 +29,15 @@ public class MoveList extends Moves {
                 move.setStatChangeType(3);
                 break;
             case 3:
-                // Slash
-                move.setName("Talhada");
-                move.setDesc("O alvo é atacado com um golpe de garras ou lâminas.");
+                move.setName("Slash");
+                move.setDesc("The target is attacked with a slash of claws or blades. Critical hits land more easily.");
                 move.setPP(20);
                 move.setPower(70);
                 move.setCategory(1);
                 break;
             case 4:
-                // Scary Face
-                move.setName("Cara Assustadora");
-                move.setDesc("O usuário assusta o alvo com uma cara assustadora para reduzir drasticamente sua velocidade.");                         
+                move.setName("Scary face");
+                move.setDesc("The user frightens the target with a scary face to harshly lower its Speed stat.");
                 move.setPP(10);
                 move.setPower(0);
                 move.setCategory(3);
@@ -53,9 +46,8 @@ public class MoveList extends Moves {
                 move.setStatChangeType(5);
                 break;
             case 5:
-                // Skull Bash
-                move.setName("Quebra Crânio");
-                move.setDesc("O usuário encolhe a cabeça e depois bate no alvo.");
+                move.setName("Skull bash");
+                move.setDesc("The user tucks in its head to raise its Defense stat on the first turn, then rams the target on the next turn.");
                 move.setPP(10);
                 move.setPower(70);
                 move.setCategory(1);
@@ -63,21 +55,21 @@ public class MoveList extends Moves {
         }
         return move;
     }
-    
+
     public Moves getWaterMove(int id) {
         Moves waterMove = new Moves();
         waterMove.setType(2);
         switch (id) {
             case 1:
-                // Water Gun
-                waterMove.setName("Jato de Água");
+                waterMove.setName("Water gun");
+                waterMove.setDesc("The target is blasted with a forceful shot of water.");
                 waterMove.setPP(25);
                 waterMove.setPower(40);
                 waterMove.setCategory(2);
                 break;
             case 2:
-                // Withdraw
-                waterMove.setName("Retirada");
+                waterMove.setName("Withdraw");
+                waterMove.setDesc("The user withdraws its body into its hard shell, raising its Defense stat.");
                 waterMove.setPP(40);
                 waterMove.setPower(0);
                 waterMove.setCategory(3);
@@ -86,17 +78,15 @@ public class MoveList extends Moves {
                 waterMove.setStatChangePower(2);
                 break;
             case 3:
-                // Water Pulse
-                waterMove.setName("Vibração de Água");
-                waterMove.setDesc("O usuário ataca o alvo com uma explosão de água pulsante.");
+                waterMove.setName("Water Pulse");
+                waterMove.setDesc("The user attacks the target with a pulsing blast of water. This may also confuse the target.");
                 waterMove.setPP(20);
                 waterMove.setPower(60);
                 waterMove.setCategory(2);
                 break;
             case 4:
-                // Aqua Tail
-                waterMove.setName("Cauda de Água");
-                waterMove.setDesc("O usuário ataca balançando a cauda como se fosse uma onda viciosa em uma tempestade violenta.");
+                waterMove.setName("Aqua Tail");
+                waterMove.setDesc("The user attacks by swinging its tail as if it were a vicious wave in a raging storm.");
                 waterMove.setPP(10);
                 waterMove.setPower(90);
                 waterMove.setCategory(1);
@@ -104,15 +94,14 @@ public class MoveList extends Moves {
         }
         return waterMove;
     }
-    
+
     public Moves getFireMove(int id) {
         Moves fireMove = new Moves();
         fireMove.setType(3);
         switch (id) {
             case 1:
-                // Flamethrower
-                fireMove.setName("Lança Chamas");
-                fireMove.setDesc("O alvo é queimado com uma intensa explosão de fogo.");
+                fireMove.setName("Flamethrower");
+                fireMove.setDesc("The target is scorched with an intense blast of fire. This may also leave the target with a burn.");
                 fireMove.setPP(15);
                 fireMove.setPower(90);
                 fireMove.setCategory(2);
@@ -120,15 +109,14 @@ public class MoveList extends Moves {
         }
         return fireMove;
     }
-    
+
     public Moves getFlyingMove(int id) {
         Moves flyingMove = new Moves();
         flyingMove.setType(5);
         switch (id) {
             case 1:
-                // Wing Attack
-                flyingMove.setName("Ataque de Asas");
-                flyingMove.setDesc("O alvo é atingido por grandes e imponentes asas abertas para causar dano.");
+                flyingMove.setName("Wing Attack");
+                flyingMove.setDesc("The target is struck with large, imposing wings spread wide to inflict damage.");
                 flyingMove.setPP(35);
                 flyingMove.setPower(60);
                 flyingMove.setCategory(1);
@@ -136,15 +124,14 @@ public class MoveList extends Moves {
         }
         return flyingMove;
     }
-    
+
     public Moves getSteelMove(int id) {
         Moves steelMove = new Moves();
         steelMove.setType(6);
         switch (id) {
             case 1:
-                // Iron Defense
-                steelMove.setName("Defesa de Ferro");
-                steelMove.setDesc("O usuário endurece a superfície de seu corpo como ferro, aumentando drasticamente seu status de defesa.");
+                steelMove.setName("Iron Defense");
+                steelMove.setDesc("The user hardens its body’s surface like iron, sharply raising its Defense stat.");
                 steelMove.setPP(15);
                 steelMove.setPower(0);
                 steelMove.setCategory(3);
@@ -155,23 +142,21 @@ public class MoveList extends Moves {
         }
         return steelMove;
     }
-    
+
     public Moves getFairyMove(int id) {
         Moves Move = new Moves();
         Move.setType(7);
         switch (id) {
             case 1:
-                // Moonblast
-                Move.setName("Explosão Lunar");
-                Move.setDesc("Tomando emprestado o poder da lua, o usuário ataca o alvo.");
+                Move.setName("Moonblast");
+                Move.setDesc("Borrowing the power of the moon, the user attacks the target. This may also lower the target’s Sp. Atk stat.");
                 Move.setPP(15);
                 Move.setPower(95);
                 Move.setCategory(2);
                 break;
             case 2:
-                // Draining Kiss
-                Move.setName("Beijo Drenante");
-                Move.setDesc("O usuário atinge o alvo com um beijo.");
+                Move.setName("Draining Kiss");
+                Move.setDesc("The user steals the target’s HP with a kiss. The user’s HP is restored by over half of the damage taken by the target.");
                 Move.setPP(10);
                 Move.setPower(50);
                 Move.setCategory(2);
@@ -179,14 +164,13 @@ public class MoveList extends Moves {
         }
         return Move;
     }
-    
+
     public Moves getPsychicMove(int id) {
         Moves Move = new Moves();
         Move.setType(8);
         switch (id) {
             case 1:
-                // Calm Mind
-                Move.setName("Mente Calma");
+                Move.setName("Calm Mind");
                 Move.setDesc("O usuário silenciosamente concentra sua mente e acalma seu espírito para aumentar seu ataque especial.");
                 Move.setPP(20);
                 Move.setPower(0);
@@ -196,9 +180,8 @@ public class MoveList extends Moves {
                 Move.setStatChangePower(2);
                 break;
             case 2:
-                // Psychic 
-                Move.setName("Psiquico");
-                Move.setDesc("O alvo é atingido por uma forte força telecinética.");
+                Move.setName("Psychic");
+                Move.setDesc("The target is hit by a strong telekinetic force.");
                 Move.setPP(10);
                 Move.setPower(90);
                 Move.setCategory(2);
@@ -206,24 +189,22 @@ public class MoveList extends Moves {
         }
         return Move;
     }
-    
+
     public Moves getGroundMove(int id) {
         Moves Move = new Moves();
         Move.setType(16);
         switch (id) {
             case 1:
-                // Bonemerang
-                Move.setName("Ossomerangue");
-                Move.setDesc("O usuário joga o osso que ele segura. O osso faz um loop ao redor para acertar o alvo duas vezes - indo e vindo.");
+                Move.setName("Bonemerang");
+                Move.setDesc("The user throws the bone it holds. The bone loops to hit the target twice, coming and going.");
                 Move.setPP(10);
                 Move.setAccuracy(90);
                 Move.setPower(100);
                 Move.setCategory(1);
                 break;
             case 2:
-                // Bone Club
-                Move.setName("Clube Ósseo");
-                Move.setDesc("O usuário bate no alvo com um osso.");
+                Move.setName("Bone Club");
+                Move.setDesc("The user clubs the target with a bone.");
                 Move.setPP(20);
                 Move.setAccuracy(85);
                 Move.setPower(65);
