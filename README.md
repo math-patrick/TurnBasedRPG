@@ -14,4 +14,7 @@ Para configurar o servidor, basta abrir a classe ClientSideConnection.java e alt
 Basta escolher um ataque para iniciar a batalha. Para batalhar, basta escolher um dos quatro ataques que são exclusivos dos Pokémon escolhidos. Várias mecânicas podém afetar o combate, inclusive poder do ataque utilizado, status aumentado/diminuidos por alguns ataques específicos, como Mente Calma da Gardevoir
 
 ## Contato
-Qualquer dúvida pode ser encaminhada para o e-mail: matheus.patrck@gmail.com<
+Qualquer dúvida pode ser encaminhada para o e-mail: matheus.patrck@gmail.com
+
+## Imagens
+https://imgur.com/a/1yzrvqH
